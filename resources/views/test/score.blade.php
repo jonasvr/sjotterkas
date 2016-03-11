@@ -8,7 +8,7 @@
                 <div class="panel-heading">Welcome</div>
 
                 <div class="panel-body">
-                  {!! Form::open(array('url' => URL::route('score'), 'method' => 'post','files' => true)) !!}
+                  {!! Form::open(array('url' => URL::route('score'), 'method' => 'post')) !!}
                     {!! Form::label('team') !!}
                     {!! Form::text('team')!!}
                   {!! Form::submit() !!}

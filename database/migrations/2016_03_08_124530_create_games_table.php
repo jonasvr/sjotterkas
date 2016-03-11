@@ -14,10 +14,13 @@ class CreateGamesTable extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('player1');
-            $table->string('player2');
-            $table->string('player3');
-            $table->string('player4');
+            $table->string('player1')->nullable();
+            $table->string('player2')->nullable();
+            // upgrade to 4players
+            // $table->string('player3')->nullable();
+            // $table->string('player4')->nullable();
+            $table->integer('points_black')->default(0);
+            $table->integer('points_green')->default(0);
             $table->string('winner');
             $table->timestamps();
         });
