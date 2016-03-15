@@ -10,10 +10,11 @@ use App\Goals;
 
 class GameController extends Controller
 {
-    public function test()
+    public function index()
     {
-      echo "in";
-      return View('poging.score');
+      $game = Games::orderby('id','desc')->first();
+      $data = ["game" => $game];
+      return View('visuals.score', $data);
     }
 
 
@@ -38,7 +39,7 @@ class GameController extends Controller
       elseif(!$game->player2)
       {
         $game->player2 = $request->player;
-        echo "game is full, Let's play";
+        echo "play";
       }
       // upgrade to 4players
       // elseif(!$game->player3)
@@ -49,7 +50,6 @@ class GameController extends Controller
         echo "game is full";
       }
       $game->save();
-      echo 'player added';
     }
 
     public function score(Request $request)
@@ -58,14 +58,14 @@ class GameController extends Controller
       $game = Games::orderby('id','desc')->first();
       if(!$game->winner)
       {
-        if($data['team'] == 'black')
+        if($data['team'] == 'black' && $data['action'] == 'goal')
         {
           $game->points_black++;
           $goal = new Goals();
           $goal->player_id = $game->player1;
           // $goal->speed = $data->speed; //update for when sensors arrive
           echo 'black scored';
-        }elseif($data['team'] == 'green')
+        }elseif($data['team'] == 'green' && $data['action'] == 'goal')
         {
           $game->points_green++;
           $goal = new Goals();
@@ -73,7 +73,22 @@ class GameController extends Controller
           // $goal->speed = $data->speed; //update for when sensors arrive
           echo 'green scored';
         }
-        $minGoals=3;
+        elseif($data['team'] == 'black' && $data['action'] == 'cancel')
+        {
+          $game->points_black--;
+          $goal = new Goals();
+          $goal->player_id = $game->player1;
+          // $goal->speed = $data->speed; //update for when sensors arrive
+          echo 'black scored';
+        }elseif($data['team'] == 'green' && $data['action'] == 'cancel')
+        {
+          $game->points_green--;
+          $goal = new Goals();
+          $goal->player_id = $game->player1;
+          // $goal->speed = $data->speed; //update for when sensors arrive
+          echo 'green scored';
+        }
+        $minGoals=11;
         $diff = 2;
         if(($game->points_green >= $minGoals || $game->points_black >= $minGoals) && abs($game->points_green-$game->points_black) >= $diff)
         {

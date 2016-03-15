@@ -1,0 +1,36 @@
+@import url(http://db.onlinewebfonts.com/c/1315bf42a1b093b8c55ad9721883cab4?family=NBP+Sydnie2+Scoreboard);
+
+@font-face {font-family: "NBP Sydnie2 Scoreboard";
+    src: url("http://db.onlinewebfonts.com/t/1315bf42a1b093b8c55ad9721883cab4.eot");
+    src: url("http://db.onlinewebfonts.com/t/1315bf42a1b093b8c55ad9721883cab4.eot?#iefix") format("embedded-opentype"),
+    url("http://db.onlinewebfonts.com/t/1315bf42a1b093b8c55ad9721883cab4.woff") format("woff"),
+    url("http://db.onlinewebfonts.com/t/1315bf42a1b093b8c55ad9721883cab4.ttf") format("truetype"),
+    url("http://db.onlinewebfonts.com/t/1315bf42a1b093b8c55ad9721883cab4.svg#NBP Sydnie2 Scoreboard") format("svg");
+}
+
+
+body
+{background-color: black;}
+
+.scoreboard
+{
+  width: 980px;
+  position: relative;
+  margin: auto;
+  background-color: black;
+  text-align: center;
+  color: #b30000;
+  font-family: "NBP Sydnie2 Scoreboard";
+  font-size: 100px;
+}
+
+.names{
+  float: center;
+}
+.playerOne, .playerTwo{
+  width: 200px; 
+}
+.score
+{
+  font-size: 350px;
+}
