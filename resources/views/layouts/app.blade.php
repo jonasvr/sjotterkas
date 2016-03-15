@@ -26,6 +26,11 @@
             margin-right: 6px;
         }
     </style>
+
+    {{-- scripts --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.12.16/vue.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js" charset="utf-8"></script>
+    
 </head>
 <body id="app-layout">
     <nav class="navbar navbar-default">

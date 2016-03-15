@@ -8,6 +8,12 @@ use App\Http\Requests;
 use App\Games;
 use App\Goals;
 
+// added by Jonas
+use App\Events\UpdateScore;
+use App\Events\UpdatePlayers;
+use App\Events\UpdateWinner;
+use App\Events\NewGame;
+
 class GameController extends Controller
 {
     public function index()
@@ -25,7 +31,8 @@ class GameController extends Controller
     //  ]);
       $game = new Games();
       $game->save();
-      return "ok";
+      event(new NewGame('true'));
+      return "new game created";
     }
     public function update(Request $request)
     {
@@ -49,6 +56,7 @@ class GameController extends Controller
       else {
         echo "game is full";
       }
+      event(new UpdatePlayers($game->player1,$game->player2));
       $game->save();
     }
 
@@ -100,9 +108,15 @@ class GameController extends Controller
             $game->winner = $game->player2;
             echo  'green wins';
           }
+          event(new UpdateWinner($game->winner));
         }
+        $points_green = $game->points_green;
+        $points_black = $game->points_black;
 
-        $goal->save();
+        if($goal->save())
+        {
+          event(new UpdateScore($points_green,$points_black));
+        }
       }
       $game->save();
     }
