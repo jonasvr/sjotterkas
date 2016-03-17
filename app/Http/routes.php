@@ -5,7 +5,7 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'game'], function () {
-  Route::get('/',         ['as' => 'game',  'uses' => 'Gamecontroller@index']);
+  Route::get('/',         ['as' => 'game',  'uses' => 'GameController@index']);
   Route::post('/create',  ['as'=>'create',  'uses' => 'GameController@create']);
   Route::post('/update',  ['as'=>'update',  'uses' => 'GameController@update']);
   Route::post('/score',   ['as'=>'score',   'uses' => 'GameController@score']);

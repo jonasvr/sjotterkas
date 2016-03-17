@@ -32,7 +32,7 @@ class GameController extends Controller
       $game = new Games();
       $game->save();
       event(new NewGame('true'));
-      return "new game created";
+      echo "new";
     }
     public function update(Request $request)
     {
@@ -87,14 +87,14 @@ class GameController extends Controller
           $goal = new Goals();
           $goal->player_id = $game->player1;
           // $goal->speed = $data->speed; //update for when sensors arrive
-          echo 'black scored';
+          echo 'black cancel';
         }elseif($data['team'] == 'green' && $data['action'] == 'cancel')
         {
           $game->points_green--;
           $goal = new Goals();
           $goal->player_id = $game->player1;
           // $goal->speed = $data->speed; //update for when sensors arrive
-          echo 'green scored';
+          echo 'green cancel';
         }
         $minGoals=11;
         $diff = 2;

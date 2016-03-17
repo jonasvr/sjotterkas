@@ -29,7 +29,6 @@ class UpdatePlayers extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-      echo 'player';
         return ['player-channel'];
     }
 }
