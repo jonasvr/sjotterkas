@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+
+// added by Jonas
 use App\Games;
 use App\Goals;
 
-// added by Jonas
 use App\Events\UpdateScore;
 use App\Events\UpdatePlayers;
 use App\Events\UpdateWinner;

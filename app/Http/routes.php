@@ -1,18 +1,17 @@
 <?php
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', ['as' => 'game',  'uses' => 'GameController@index']);
+Route::get('/rankings', ['as' => 'rankings', 'uses' => 'RankingController@index']);
 
 Route::group(['prefix' => 'game'], function () {
-  Route::get('/',         ['as' => 'game',  'uses' => 'GameController@index']);
-  Route::post('/create',  ['as'=>'create',  'uses' => 'GameController@create']);
-  Route::post('/update',  ['as'=>'update',  'uses' => 'GameController@update']);
-  Route::post('/score',   ['as'=>'score',   'uses' => 'GameController@score']);
-  Route::get('/test',     ['as'=>'test',    'uses' => 'GameController@test']);
+  Route::get('/',         ['as' => 'game',   'uses' => 'GameController@index']);
+  Route::post('/create',  ['as' =>'create',  'uses' => 'GameController@create']);
+  Route::post('/update',  ['as' =>'update',  'uses' => 'GameController@update']);
+  Route::post('/score',   ['as' =>'score',   'uses' => 'GameController@score']);
+  Route::get('/test',     ['as' =>'test',    'uses' => 'GameController@test']);
 });
 
 Route::group(['middleware' => 'web'], function () {
-    Route::auth();
-    Route::get('/home', 'HomeController@index');
+    // Route::auth();
+    // Route::get('/home', 'HomeController@index');
 });

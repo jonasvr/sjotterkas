@@ -1,3 +1,35 @@
+
+/*overall==========================================================================*/
+body
+{background-color: black;}
+
+.navbar{
+  background-color: black;
+}
+
+.navbar .title{
+  font-size: 32px;
+}
+
+.navbar .right, .navbar .left{
+  font-size: 26px;
+}
+
+
+.red{
+  color: #b30000;
+}
+
+.blue{
+  color: #003F87;
+}
+
+.padding-top-20
+{
+  padding-top: 20px;
+}
+/*scoreboard=======================================================================*/
+
 @import url(http://db.onlinewebfonts.com/c/1315bf42a1b093b8c55ad9721883cab4?family=NBP+Sydnie2+Scoreboard);
 
 @font-face {font-family: "NBP Sydnie2 Scoreboard";
@@ -7,10 +39,6 @@
     url("http://db.onlinewebfonts.com/t/1315bf42a1b093b8c55ad9721883cab4.ttf") format("truetype"),
     url("http://db.onlinewebfonts.com/t/1315bf42a1b093b8c55ad9721883cab4.svg#NBP Sydnie2 Scoreboard") format("svg");
 }
-
-
-body
-{background-color: black;}
 
 .scoreboard
 {
@@ -28,9 +56,17 @@ body
   float: center;
 }
 .playerOne, .playerTwo{
-  width: 200px; 
+  width: 200px;
 }
 .score
 {
   font-size: 350px;
+  max-height: 400px;
+}
+
+
+/*RANKING ================================================================*/
+
+.matches, .ranking{
+  font-size: 30px;
 }
