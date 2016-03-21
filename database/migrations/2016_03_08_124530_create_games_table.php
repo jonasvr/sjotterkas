@@ -21,7 +21,7 @@ class CreateGamesTable extends Migration
             // $table->string('player4')->nullable();
             $table->integer('points_black')->default(0);
             $table->integer('points_green')->default(0);
-            $table->string('winner');
+            $table->string('winner')->nullable();
             $table->timestamps();
         });
     }

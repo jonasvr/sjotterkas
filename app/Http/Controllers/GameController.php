@@ -30,6 +30,17 @@ class GameController extends Controller
     //   $this->validate($request, [
     //    'new' => 'required',
     //  ]);
+
+      $game = Games::orderby('id','desc')->first();
+      if (!$game->winner) {
+        if ($game->points_black > $game->points_green) {
+          $game->winner = $game->player1;
+        }else {
+          $game->winner = $game->player2;
+        }
+        $game->save();
+      }
+
       $game = new Games();
       $game->save();
       event(new NewGame('true'));
