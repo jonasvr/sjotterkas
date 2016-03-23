@@ -26,11 +26,11 @@
                   </div>
 
                   <script>
-                  var black   = "<?php echo  $game->points_black; ?>";
-                  var green   = "<?php echo  $game->points_green; ?>";
-                  var player1 = "<?php echo  $game->player1; ?>";
-                  var player2 = "<?php echo  $game->player2; ?>";
-                  var winner  = "<?php echo  $game->winner; ?>";
+                  var black   = "<?php echo(isset($game) ?  $game->points_black : "0"); ?>";
+                  var green   = "<?php echo(isset($game) ?  $game->points_green : "0"); ?>";
+                  var player1 = "<?php echo(isset($game) ?  $game->player1 : "-"); ?>";
+                  var player2 = "<?php echo(isset($game) ?  $game->player2 : "-"); ?>";
+                  var winner  = "<?php echo(isset($game) ?  $game->winner : ""); ?>";
 
                   var socket = io('http://10.242.16.39:3000');//raspberry
                   // var socket = io('http://127.0.0.101:3000'); //locaal => kan veranderen

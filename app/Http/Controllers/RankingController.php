@@ -10,13 +10,19 @@ use App\Games;
 
 class RankingController extends Controller
 {
+    protected $game;
+
+    public function __construct(Games $game)
+    {
+      $this->game = $game;
+    }
+
     public function index()
     {
       $data=[
-        'rankings'=> Games::ranking(),
-        'matches' => Games::matches()
+        'rankings'=> $this->game->ranking(),
+        'matches' => $this->game->matches()
       ];
-      // dd($data);
       
       return view('visuals.rankings',$data);
     }

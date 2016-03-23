@@ -26,9 +26,8 @@ class GameController extends Controller
 
     public function index()
     {
-      $game = Games::orderby('id','desc')->first();
       $data = [
-        "game" => $game,
+        "game" => $this->game->orderby('id','desc')->first(),
       ];
 
       return View('visuals.score', $data);
@@ -42,7 +41,7 @@ class GameController extends Controller
     //  ]);
 
       // check if there's a winner or not
-      $game = Games::orderby('id','desc')->first();
+      $game = $this->game->orderby('id','desc')->first();
       if ( $game ) {
         if (!$game->winner) {
           $game->winner = 'Tie';
@@ -68,7 +67,9 @@ class GameController extends Controller
       $this->validate($request, [
        'player' => 'required',
      ]);
-      $game = Games::orderby('id','desc')->first();
+      $game = $this->game
+                    ->orderby('id','desc')
+                    ->first();
       if ( !$game->player1 ) {
         $game->player1 = $request->player;
       echo "player one is added";}
@@ -92,7 +93,9 @@ class GameController extends Controller
     public function score(Request $request)
     {
       $data = $request->all();
-      $game = Games::orderby('id','desc')->first();
+      $game = $this->game
+                    ->orderby('id','desc')
+                    ->first();
       if(!$game->winner)
       {
         if($data['team'] == 'black' && $data['action'] == 'goal') {

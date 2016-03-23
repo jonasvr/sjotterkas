@@ -5,26 +5,23 @@ import serial
 import urllib2
 import urllib
 
-def toSite(url,query_args):
-    data = urllib.urlencode(query_args)
-    request = urllib2.Request(url,data)
-    response = urllib2.urlopen(request).read()
-    return response
-
-ser = serial.Serial('/dev/ttyACM1',9600)
-serCard = serial.Serial('/dev/ttyACM0',9600)
+ser = serial.Serial('/dev/ttyACM0',9600)
+serCard = serial.Serial('/dev/ttyACM1',9600)
 url = 'http://sjotterkas.pi/game/create'
 url2 = 'http://sjotterkas.pi/game/update'
 url3 = 'http://sjotterkas.pi/game/score'
-url4 = 'http://sjotterkas.pi/player/addCard'
 
 counter = 0
 newgame = 0
 check = 1
+counter = 0
 play = 0
 
 while check:
 
+        print "counter"
+        print counter
+        counter = counter + 1
         if newgame == 0:
             new = ser.readline() #readout buttons
             new = new.split('\r') #plaats een spatie + enter erachter
@@ -34,13 +31,9 @@ while check:
                     print "nieuw maken"
                     newgame = newgame + 1
                     query_args = { 'new':'new'}
-                    response = toSite(url,query_args)
-            elif new == 'player':
-                    card_id = serCard.readline()
-                    card_id = card_id.rstrip()
-                    print card_id
-                    query_args = { 'card_id':card_id}
-                    response = toSite(url4,query_args)
+                    data = urllib.urlencode(query_args)
+                    request = urllib2.Request(url,data)
+                    response = urllib2.urlopen(request).read()
                     print response
         print newgame
 
@@ -68,26 +61,13 @@ while check:
             print action
             if action == "goal black":
                 query_args = { 'team':'black','action':'goal'}
-                response = toSite(url3,query_args)
             elif action == "goal green":
                 query_args = { 'team':'green','action':'goal'}
-                response = toSite(url3,query_args)
             elif action == "cancel green":
                 query_args = { 'team':'green','action':'cancel'}
-                response = toSite(url3,query_args)
             elif action == "cancel black":
-                query_args = { 'team':'black','action':'cancel'}
-                response = toSite(url3,query_args)
-            elif action == new:
-                newgame = 1
-                play = 0
-                query_args = { 'new':'new'}
-                response = toSite(url,query_args)
-            elif new == 'player':
-                    print 'binnen player'
-                    card_id = serCard.readline()
-                    query_args = { 'card_id':card_id}
-                    toSite(url,query_args)
-                    response = "added"
+                query_args = { 'team':'black','action':'cancel'}               
+            data = urllib.urlencode(query_args)
+            request = urllib2.Request(url3,data)
+            response = urllib2.urlopen(request).read()
             print response
-        
