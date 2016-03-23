@@ -17,10 +17,20 @@ use App\Events\NewGame;
 
 class GameController extends Controller
 {
+  protected $game;
+
+  public function __construct(Games $game)
+  {
+    $this->game = $game;
+  }
+
     public function index()
     {
       $game = Games::orderby('id','desc')->first();
-      $data = ["game" => $game];
+      $data = [
+        "game" => $game,
+      ];
+
       return View('visuals.score', $data);
     }
 
@@ -31,33 +41,40 @@ class GameController extends Controller
     //    'new' => 'required',
     //  ]);
 
+      // check if there's a winner or not
       $game = Games::orderby('id','desc')->first();
-      if (!$game->winner) {
-        if ($game->points_black > $game->points_green) {
-          $game->winner = $game->player1;
-        }else {
-          $game->winner = $game->player2;
+      if ( $game ) {
+        if (!$game->winner) {
+          $game->winner = 'Tie';
+          if ($game->points_black > $game->points_green) {
+            $game->winner = $game->player1;
+          }else {
+            $game->winner = $game->player2;
+          }
+          $game->save();
         }
-        $game->save();
       }
+
 
       $game = new Games();
       $game->save();
       event(new NewGame('true'));
+
       echo "new";
     }
+
     public function update(Request $request)
     {
       $this->validate($request, [
        'player' => 'required',
      ]);
       $game = Games::orderby('id','desc')->first();
-      if (!$game->player1)
-      { $game->player1 = $request->player;
+      if ( !$game->player1 ) {
+        $game->player1 = $request->player;
       echo "player one is added";}
-      elseif(!$game->player2)
-      {
+      elseif( !$game->player2 ) {
         $game->player2 = $request->player;
+
         echo "play";
       }
       // upgrade to 4players
@@ -78,8 +95,7 @@ class GameController extends Controller
       $game = Games::orderby('id','desc')->first();
       if(!$game->winner)
       {
-        if($data['team'] == 'black' && $data['action'] == 'goal')
-        {
+        if($data['team'] == 'black' && $data['action'] == 'goal') {
           $game->points_black++;
           $goal = new Goals();
           $goal->player_id = $game->player1;
@@ -108,6 +124,7 @@ class GameController extends Controller
           // $goal->speed = $data->speed; //update for when sensors arrive
           echo 'green cancel';
         }
+
         $minGoals=11;
         $diff = 2;
         if(($game->points_green >= $minGoals || $game->points_black >= $minGoals) && abs($game->points_green-$game->points_black) >= $diff)

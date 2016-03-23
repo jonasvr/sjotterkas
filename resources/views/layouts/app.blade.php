@@ -43,7 +43,8 @@
               Sjotterkas - scoreboard
             </div>
             <div class="col-md-3 right text-right text-lowercase">
-                rankings
+              {{ Html::link(URL::route('rankings'), 'rankings',['class' => 'red']) }}
+
             </div>
           </div>
         </div>

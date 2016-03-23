@@ -7,6 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -50,8 +51,8 @@ class AuthController extends Controller
     {
         return Validator::make($data, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+            // 'email' => 'required|email|max:255|unique:users',
+            // 'password' => 'required|min:6|confirmed',
         ]);
     }
 
@@ -68,5 +69,33 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function addCard(Request $request)
+    {
+      $data = $request->all();
+      // var_dump($data);
+      $user = User::where('card_id',  $data['card_id'])->first();
+
+      if ( !$user ) {
+        User::create([
+            'card_id' => $data['card_id'],
+        ]);
+        echo "card added";
+      } else {
+        echo "card is already used";
+      }
+
+    }
+
+    public function addName(Request $request)
+    {
+        $user = User::orderby('id','desc')->first();
+        if ( !$user->name)
+        {
+          $user->name = $request->name;
+          $user->save();
+        }
+        return back()->withsucces('succes');
     }
 }

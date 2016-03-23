@@ -17,6 +17,7 @@ class RankingController extends Controller
         'matches' => Games::matches()
       ];
       // dd($data);
+      
       return view('visuals.rankings',$data);
     }
 }

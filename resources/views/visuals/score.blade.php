@@ -32,7 +32,7 @@
                   var player2 = "<?php echo  $game->player2; ?>";
                   var winner  = "<?php echo  $game->winner; ?>";
 
-                  var socket = io('http://152.146.46.125:3000');//raspberry
+                  var socket = io('http://10.242.16.39:3000');//raspberry
                   // var socket = io('http://127.0.0.101:3000'); //locaal => kan veranderen
                     new Vue({
                       el: '.scoreboard',

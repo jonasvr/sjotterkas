@@ -12,6 +12,7 @@ class CurrentController extends Controller
     public function index()
     {
       $game = Games::orderby('id','desc')->first();
+      
       return View('visuals.score', $data);
     }
 }

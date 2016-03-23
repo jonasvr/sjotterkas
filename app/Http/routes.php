@@ -3,8 +3,12 @@
 Route::get('/', ['as' => 'game',  'uses' => 'GameController@index']);
 Route::get('/rankings', ['as' => 'rankings', 'uses' => 'RankingController@index']);
 Route::get('/cam', function(){
-  return view('visuals.cam'); 
+  return view('visuals.cam');
 });
+
+Route::post('/player/addCard', ['as' => 'addCard',  'uses' => 'Auth\AuthController@addCard']);
+Route::post('/player/addName', ['as' => 'addName',  'uses' => 'Auth\AuthController@addName']);
+
 
 Route::group(['prefix' => 'game'], function () {
   Route::get('/',         ['as' => 'game',   'uses' => 'GameController@index']);
@@ -15,6 +19,6 @@ Route::group(['prefix' => 'game'], function () {
 });
 
 Route::group(['middleware' => 'web'], function () {
-    // Route::auth();
+    Route::auth();
     // Route::get('/home', 'HomeController@index');
 });

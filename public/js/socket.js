@@ -18,21 +18,25 @@ NewRedis.subscribe('new-channel');
 
 //when redis get any kind of message, accept channel + message
 pointRedis.on('message', function(channel,message){
+  console.log(message);
   message = JSON.parse(message);
   io.emit(channel + ':' + message.event, message.data); //test-channel:UserSignedUp
 });
 
 playerRedis.on('message', function(channel,message){
+  console.log(message);
   message = JSON.parse(message);
   io.emit(channel + ':' + message.event, message.data); //test-channel:UserSignedUp
 });
 
 winnerRedis.on('message', function(channel,message){
+  console.log(message);
   message = JSON.parse(message);
   io.emit(channel + ':' + message.event, message.data); //test-channel:UserSignedUp
 });
 
 NewRedis.on('message', function(channel,message){
+  console.log(message);
   message = JSON.parse(message);
   io.emit(channel + ':' + message.event, message.data); //test-channel:UserSignedUp
 });
