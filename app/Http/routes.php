@@ -8,8 +8,8 @@ Route::get('/cam', function(){
 
 Route::group(['prefix'=>'player'], function()
 {
-  Route::post('/addCard', ['as' => 'addCard',  'uses' => 'Auth\AuthController@addCard']);
-  Route::post('/addName', ['as' => 'addName',  'uses' => 'Auth\AuthController@addName']);
+  Route::post('/addCard', ['as' => 'addCard',  'uses' => 'CardController@addCard']);
+  Route::post('/addName', ['as' => 'addName',  'uses' => 'CardController@addName']);
 });
 
 Route::group(['prefix' => 'game'], function () {
