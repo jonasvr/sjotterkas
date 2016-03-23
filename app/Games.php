@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use App\User;
 
 class Games extends Model
 {
@@ -15,7 +16,8 @@ class Games extends Model
   {
     $topper   =  Games::groupBy('winner')
                       ->whereNotNull('winner')
-                      ->select(DB::raw('COUNT(winner) as winnings'),'winner')
+                      ->join('users', 'users.card_id', '=', 'games.winner')
+                      ->select(DB::raw('COUNT(games.winner) as winnings'),'users.name')
                       ->orderBy('winnings','desc')
                       ->take(10)
                       ->get();
@@ -25,7 +27,27 @@ class Games extends Model
   public static function matches()
   {
     $matches   =  Games::take(10)
-                      ->get();
+                        ->whereNotNull('winner')
+                        ->get();
+    for ($i=0; $i < COUNT($matches); $i++) {
+      $playerName = User::where('card_id',$matches[$i]->player1)->first();
+      $matches[$i]->player1 = $playerName->name;
+      $playerName = User::where('card_id',$matches[$i]->player2)->first();
+      $matches[$i]->player2 = $playerName->name;
+      // dd(  $matches[$i]);
+
+    }
+
     return $matches;
+  }
+
+  public function getPlayer1()
+  {
+    return $this->belongsTo('App\User','player1','card_id');
+  }
+
+  public function getPlayer2()
+  {
+    return $this->belongsTo('App\User','player2','card_id');
   }
 }

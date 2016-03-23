@@ -9,6 +9,7 @@ use App\Http\Requests;
 // added by Jonas
 use App\Games;
 use App\Goals;
+use App\User;
 
 use App\Events\UpdateScore;
 use App\Events\UpdatePlayers;
@@ -86,8 +87,17 @@ class GameController extends Controller
       else {
         echo "game is full";
       }
-      event(new UpdatePlayers($game->player1,$game->player2));
       $game->save();
+      $user = User::all();
+      $player1 = $user->where('card_id',$game->player1)->first();
+      $player2 = $user->where('card_id',$game->player2)->first();
+      if( !$player2 ) {
+        $player2 = collect([]);
+        $player2->name = "player 2";
+      }
+
+      event(new UpdatePlayers($player1->name,$player2->name));
+
     }
 
     public function score(Request $request)

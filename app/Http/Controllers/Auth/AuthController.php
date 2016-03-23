@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
 
+use App\Events\NewCard;
+
+
 class AuthController extends Controller
 {
     /*
@@ -74,18 +77,22 @@ class AuthController extends Controller
     public function addCard(Request $request)
     {
       $data = $request->all();
-      // var_dump($data);
-      $user = User::where('card_id',  $data['card_id'])->first();
+      User::where('name', null)->delete();
+      $user = User::first();
+      if($user)
+      {
+        $user = User::where('card_id',  $data['card_id'])->first();
+      }
 
       if ( !$user ) {
         User::create([
             'card_id' => $data['card_id'],
         ]);
         echo "card added";
+        event(new NewCard($data['card_id']));
       } else {
         echo "card is already used";
       }
-
     }
 
     public function addName(Request $request)

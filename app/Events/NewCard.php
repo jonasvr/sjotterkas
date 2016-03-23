@@ -6,21 +6,18 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class UpdatePlayers extends Event implements ShouldBroadcast
+class NewCard extends Event implements ShouldBroadcast
 {
     use SerializesModels;
-    public $player1, $player2;
-
-
+    public $card_id;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($player1,$player2)
+    public function __construct($card_id)
     {
-        $this->player1 = $player1;
-        $this->player2 = $player2;
+        $this->card_id = $card_id;
     }
 
     /**
@@ -30,6 +27,6 @@ class UpdatePlayers extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['player-channel'];
+        return ['card-channel'];
     }
 }

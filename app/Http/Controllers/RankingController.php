@@ -23,7 +23,7 @@ class RankingController extends Controller
         'rankings'=> $this->game->ranking(),
         'matches' => $this->game->matches()
       ];
-      
+
       return view('visuals.rankings',$data);
     }
 }

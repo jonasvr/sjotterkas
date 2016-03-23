@@ -28,12 +28,12 @@
                   <script>
                   var black   = "<?php echo(isset($game) ?  $game->points_black : "0"); ?>";
                   var green   = "<?php echo(isset($game) ?  $game->points_green : "0"); ?>";
-                  var player1 = "<?php echo(isset($game) ?  $game->player1 : "-"); ?>";
-                  var player2 = "<?php echo(isset($game) ?  $game->player2 : "-"); ?>";
+                  var player1 = "<?php echo((isset($game) && $game->getPlayer1) ?  $game->getPlayer1->name : "player 1"); ?>";
+                  var player2 = "<?php echo((isset($game) && $game->getPlayer2) ?  $game->getPlayer2->name : "player 2"); ?>";
                   var winner  = "<?php echo(isset($game) ?  $game->winner : ""); ?>";
 
-                  var socket = io('http://10.242.16.39:3000');//raspberry
-                  // var socket = io('http://127.0.0.101:3000'); //locaal => kan veranderen
+                  // var socket = io('http://10.242.16.39:3000');//raspberry
+                  // var socket = io('http://192.168.56.101:3000'); //locaal => kan veranderen
                     new Vue({
                       el: '.scoreboard',
 

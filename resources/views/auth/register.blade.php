@@ -28,8 +28,8 @@
                             <label class="col-md-4 control-label">Card id</label>
 
                             <div class="col-md-6">
-                                <label class="control-label">Card id</label>
-                                @if ($errors->has('name'))
+                                <label class="control-label">@{{ card_id }}</label>
+                                @if ($errors->has('card_id'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('name') }}</strong>
                                     </span>
@@ -50,4 +50,24 @@
         </div>
     </div>
 </div>
+<script>
+
+// var socket = io('http://10.242.16.39:3000');//raspberry
+// var socket = io('http://192.168.56.101:3000'); //locaal => kan veranderen
+
+  new Vue({
+    el: '.form-horizontal',
+
+    data:{
+      card_id:'Card_id',
+    },
+
+    ready: function(){
+      socket.on('card-channel:App\\Events\\NewCard', function(data){
+        console.log(data);
+        this.card_id = data.card_id;
+      }.bind(this));
+    }
+  })
+</script>
 @endsection

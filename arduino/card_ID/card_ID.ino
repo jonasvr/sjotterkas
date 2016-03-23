@@ -30,6 +30,7 @@ void loop(void) {
   {
     NfcTag tag = nfc.read();
 //    Serial.println(tag.getTagType());
+Serial.print("card_id/");
 Serial.println(tag.getUidString());
 
     if (tag.hasNdefMessage()) // every tag won't have a message

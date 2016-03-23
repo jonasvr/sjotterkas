@@ -18,7 +18,7 @@
 
                 @foreach($matches as $match)
                   <div class="col-md-5 text-center text-capitalize">
-                    {{ $match->player1 }}:   {{ $match->points_black }}
+                      {{ $match->player1 }}:   {{ $match->points_black }}
                   </div>
                   <div class=" col-md-2 text-uppercase">
                     vs
@@ -41,7 +41,7 @@
                 </div>
                 @foreach($rankings as $winners )
                   <div class="col-md-offset-2 col-md-6 text-center">
-                  {{ $winners->winner }}
+                  {{ $winners->name }}
                   </div>
                   <div class="col-md-offset-4 text-center">
                     {{ $winners->winnings }}
