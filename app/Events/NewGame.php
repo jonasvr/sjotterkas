@@ -6,10 +6,12 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
+
 class NewGame extends Event implements ShouldBroadcast
 {
     use SerializesModels;
     public $new;
+
     /**
      * Create a new event instance.
      *
@@ -17,7 +19,7 @@ class NewGame extends Event implements ShouldBroadcast
      */
     public function __construct($new)
     {
-        $this->new = $new;
+        $this->new  = $new;
     }
 
     /**

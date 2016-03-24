@@ -1,35 +1,3 @@
-
-/*overall==========================================================================*/
-body
-{background-color: black;}
-
-.navbar{
-  background-color: black;
-}
-
-.navbar .title{
-  font-size: 32px;
-}
-
-.navbar .right, .navbar .left{
-  font-size: 26px;
-}
-
-
-.red{
-  color: #b30000;
-}
-
-.blue{
-  color: #003F87;
-}
-
-.padding-top-20
-{
-  padding-top: 20px;
-}
-/*scoreboard=======================================================================*/
-
 @import url(http://db.onlinewebfonts.com/c/1315bf42a1b093b8c55ad9721883cab4?family=NBP+Sydnie2+Scoreboard);
 
 @font-face {font-family: "NBP Sydnie2 Scoreboard";
@@ -40,16 +8,118 @@ body
     url("http://db.onlinewebfonts.com/t/1315bf42a1b093b8c55ad9721883cab4.svg#NBP Sydnie2 Scoreboard") format("svg");
 }
 
+
+/*overall==========================================================================*/
+body {
+    font-family: 'Lato';
+
+}
+
+.fa-btn {
+    margin-right: 6px;
+}
+
+.navbar .title{
+  font-size: 32px;
+}
+
+.navbar .right, .navbar .left{
+  font-size: 26px;
+}
+/*COLORS=======================================================================*/
+.blue{
+  color: #0975B2;
+}
+
+.red{
+  color:#da0812;
+}
+
+.bgBlack{
+  background-color: black;
+}
+
+.bgWhite{
+  background-color: #eae7e4;
+}
+
+/*TEXT=========================================================================*/
+
+.font-BNP{
+  font-family:"NBP Sydnie2 Scoreboard";
+}
+
+.text-size-100{
+  font-size: 100px;
+}
+
+.text-size-75{
+  font-size: 75px;
+}
+
+.text-size-60{
+  font-size: 60px;
+}
+
+.text-size-50{
+  font-size: 50px;
+}
+.text-size-20{
+  font-size: 20px;
+}
+
+
+
+/*PLACEMENT====================================================================*/
+.padding-10
+{
+  padding: 10px;
+}
+
+.padding-0
+{
+  padding: 0px;
+}
+
+.padding-top-10
+{
+  padding-top: 20px;
+}
+
+.margin-10{
+  margin:10px 10px;
+}
+
+.border-R-25{
+  border-radius: 25px;
+}
+
+/*SIZES========================================================================*/
+.height-400 {
+  height: 400px;
+}
+
+.height-350 {
+  height: 350px;
+}
+
+.height-235 {
+  height: 235px;
+}
+
+/*scoreboard===================================================================*/
+
+
 .scoreboard
 {
-  width: 980px;
+  /*width: 980px;
   position: relative;
   margin: auto;
   background-color: black;
   text-align: center;
   color: #b30000;
   font-family: "NBP Sydnie2 Scoreboard";
-  font-size: 100px;
+  font-size: 100px;*/
 }
 
 .names{
@@ -69,4 +139,11 @@ body
 
 .matches, .ranking{
   font-size: 30px;
+}
+
+/*HOME ===================================================================*/
+.wrapper{
+  padding:0 5%;
+    /*font-family: "NBP Sydnie2 Scoreboard";*/
+  /*border-radius: 25px;*/
 }

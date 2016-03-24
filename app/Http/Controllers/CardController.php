@@ -12,6 +12,15 @@ class CardController extends Controller
 {
   public function addCard(Request $request)
   {
+    $validator = Validator::make($request->all(), [
+            'card_id' => 'required|size:11',
+            'body' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            echo "error";
+        }
+
     $data = $request->all();
     User::where('name', null)->delete();
     $user = User::first();
@@ -24,7 +33,7 @@ class CardController extends Controller
       User::create([
           'card_id' => $data['card_id'],
       ]);
-      echo "card added";
+      echo "added";
       event(new NewCard($data['card_id']));
     } else {
       echo "card is already used";

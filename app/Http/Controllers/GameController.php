@@ -37,9 +37,15 @@ class GameController extends Controller
 
     public function create(Request $request)
     {
-    //   $this->validate($request, [
-    //    'new' => 'required',
-    //  ]);
+      $this->validate($request, [
+       'new' => 'required',
+     ]);
+
+     if ($validator->fails()) {
+
+         echo "error bij aanmaken";
+         return "error";
+     }
 
       // check if there's a winner or not
       $game = $this->game->orderby('id','desc')->first();
@@ -66,8 +72,15 @@ class GameController extends Controller
     public function update(Request $request)
     {
       $this->validate($request, [
-       'player' => 'required',
+       'player' =>  'required|size:11',
      ]);
+
+     if ($validator->fails()) {
+
+         echo "error bij speler toevoegen";
+         return "error";
+     }
+
       $game = $this->game
                     ->orderby('id','desc')
                     ->first();
@@ -102,6 +115,17 @@ class GameController extends Controller
 
     public function score(Request $request)
     {
+      $this->validate($request, [
+       'team'   =>  'required|size:5',
+       'action' =>  'required',
+     ]);
+
+     if ($validator->fails()) {
+
+         echo "error bij actie toevoegen";
+         return "error";
+     }
+
       $data = $request->all();
       $game = $this->game
                     ->orderby('id','desc')
@@ -150,7 +174,8 @@ class GameController extends Controller
             $game->winner = $game->player2;
             echo  'green wins';
           }
-          event(new UpdateWinner($game->winner));
+          $winner = $user->where('card_id',$game->winner)->first();
+          event(new UpdateWinner($winner));
         }
         $points_green = $game->points_green;
         $points_black = $game->points_black;

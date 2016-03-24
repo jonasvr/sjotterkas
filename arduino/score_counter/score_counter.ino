@@ -27,7 +27,7 @@ int subBlackAdress = 1; //eeprom adress om op te slaan
 int addGreenAdress = 2; //eeprom adress om op te slaan
 int subGreenAdress = 3; //eeprom adress om op te slaan
 int resetAdress    = 4; //eeprom adress om op te slaan
-int regiAdress     = 6; //eeprom adress om op te slaan => adress 5 can't save 0 for some reason
+int regiAdress     = 7; //eeprom adress om op te slaan => adress 5 can't save 0 for some reason
 
 int score[] = {0, 0}; //pos0 = team black - pos1 = team green
 

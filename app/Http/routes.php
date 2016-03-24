@@ -1,10 +1,10 @@
 <?php
 
-Route::get('/', ['as' => 'game',  'uses' => 'GameController@index']);
+ Route::get('/', ['as' => 'home',  'uses' => 'HomeController@index']);
 Route::get('/rankings', ['as' => 'rankings', 'uses' => 'RankingController@index']);
-Route::get('/cam', function(){
-  return view('visuals.cam');
-});
+// Route::get('/home', function(){
+//   return view('home');
+// });
 
 Route::group(['prefix'=>'player'], function()
 {

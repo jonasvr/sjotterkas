@@ -33,7 +33,6 @@ class Games extends Model
     $matches   =  Games::take(4)
                         ->whereNotNull('winner')
                         ->get();
-                        // dd($matches);
     for ($i=0; $i < COUNT($matches); $i++) {
       $playerName = User::where('card_id',$matches[$i]->player1)->first();
       $matches[$i]->player1 = $playerName->name;
@@ -54,10 +53,5 @@ class Games extends Model
   public function getPlayer2()
   {
     return $this->belongsTo('App\User','player2','card_id');
-  }
-
-  public function getWinner()
-  {
-    return $this->belongsTo('App\User','winner','card_id');
   }
 }
