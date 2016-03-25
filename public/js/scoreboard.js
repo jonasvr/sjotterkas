@@ -8,7 +8,8 @@
       points_green:green,
       player1:player1,
       player2:player2,
-      winner:winner
+      winner:winner,
+      // speeds:speeds,
     },
 
     ready: function(){
@@ -35,6 +36,7 @@
           this.player2 = "player 2";
           this.winner = "";
         }
+        console.log(data.speeds);
       }.bind(this));
     }
   })

@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="wrapper border-R-25">
+  <div class="wrapper border-R-25 scoreboard">
     <div class="row">
-      <div class="col-md-8 padding-top-10 scoreboard">
+      <div class="col-md-8 padding-top-10 ">
         <div class="bgBlack padding-10 height-400">
           <h2 class='text-center red'>Current Game</h2>
           <div class="row">
@@ -25,12 +25,17 @@
         <div class="bgBlack padding-10  height-400">
           <h2 class='text-center blue text-capitalize'>Record: most wins</h2>
           <div class="text-center red text-size-20">
-            <div class="row">
+            {{-- <div class="row">
               @foreach($rankings as $winners )
                 <p>
                     {{ $winners->name }} : {{ $winners->winnings }}
                 </p>
               @endforeach
+            </div> --}}
+            <div class="row" v-for="speed in speeds">
+                <p>
+                    @{{ speed.name }} : @{{ speed.winnings }}
+                </p>
             </div>
 
 
@@ -91,9 +96,11 @@
   <script>
     var black   = "<?php echo(isset($game) ?  $game->points_black : "0"); ?>";
     var green   = "<?php echo(isset($game) ?  $game->points_green : "0"); ?>";
-    var player1 = "<?php echo((isset($game) && $game->getPlayer1) ?  $game->getPlayer1->name : "player 1"); ?>";
-    var player2 = "<?php echo((isset($game) && $game->getPlayer2) ?  $game->getPlayer2->name : "player 2"); ?>";
-    var winner  = "<?php echo(isset($game) ?  $game->getWinner->name : ""); ?>";
+    var player1 = "<?php echo((isset($game) &&  $game->getPlayer1) ?  $game->getPlayer1->name : "player 1"); ?>";
+    var player2 = "<?php echo((isset($game) &&  $game->getPlayer2) ?  $game->getPlayer2->name : "player 2"); ?>";
+    var winner  = "<?php echo(isset($game)  &&  $game->winner ?  $game->getWinner->name : ""); ?>";
+    // var speeds   = "<?php echo(isset($rankings) ?  $rankings : ['name'=>'','winnings'=>'']); ?>";
+
   </script>
   <script src="/js/scoreboard.js"></script>
 @endsection

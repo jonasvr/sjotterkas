@@ -15,6 +15,7 @@ use App\Events\UpdateScore;
 use App\Events\UpdatePlayers;
 use App\Events\UpdateWinner;
 use App\Events\NewGame;
+use Validator;
 
 class GameController extends Controller
 {
@@ -37,7 +38,7 @@ class GameController extends Controller
 
     public function create(Request $request)
     {
-      $this->validate($request, [
+      $validator = Validator::make($request->all(), [
        'new' => 'required',
      ]);
 
@@ -71,7 +72,7 @@ class GameController extends Controller
 
     public function update(Request $request)
     {
-      $this->validate($request, [
+      $validator = Validator::make($request->all(), [
        'player' =>  'required|size:11',
      ]);
 
@@ -115,7 +116,7 @@ class GameController extends Controller
 
     public function score(Request $request)
     {
-      $this->validate($request, [
+      $validator = Validator::make($request->all(), [
        'team'   =>  'required|size:5',
        'action' =>  'required',
      ]);
