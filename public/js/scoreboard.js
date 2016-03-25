@@ -1,4 +1,4 @@
-console.log(game);
+console.log(matches);
 if (game != null) {
   var black   = game['points_black'];
   var green   = game['points_green'];
@@ -11,8 +11,6 @@ else {
   var show = 0;
 }
 var speeds  = rankings;
-
-console.log(show);
 // var socket = io('http://10.242.16.39:3000');//raspberry
 // var socket = io('http://192.168.56.101:3000'); //locaal => kan veranderen
   new Vue({
@@ -25,6 +23,7 @@ console.log(show);
       player2:player2,
       winner:winner,
       speeds:speeds,
+      matches:matches,
       show:show,
     },
 
@@ -53,7 +52,8 @@ console.log(show);
           this.winner = "";
           this.show = 1;
         }
-        console.log(data.speeds);
+        this.speeds = data.speeds;
+        this.matches = data.matches;
       }.bind(this));
     }
   })

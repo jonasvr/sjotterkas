@@ -23,8 +23,8 @@ class NewGame extends Event implements ShouldBroadcast
     public function __construct($new)
     {
         $this->new  = $new;
-        $this->speeds   = Games::ranking();
-        $this->matches  = Games::matches();
+        $this->speeds   = Games::ranking()->toArray();
+        $this->matches  = Games::matches()->toArray();
     }
 
     /**

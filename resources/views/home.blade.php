@@ -48,7 +48,7 @@
           <h2 class='text-center blue text-capitalize'>Record: past games</h2>
           <div class="text-center red text-size-20">
             <div class="row">
-              @foreach($matches as $match)
+              {{-- @foreach($matches as $match)
                 <div class="col-md-offset-1 col-md-4 col-xs-offset-2 col-xs-3 text-center text-capitalize">
                     {{ $match->player1 }}:   {{ $match->points_black }}
                 </div>
@@ -58,7 +58,18 @@
                 <div class=" col-md-4 col-xs-3  text-center text-capitalize">
                   {{ $match->player2 }}:   {{ $match->points_green }}
                 </div>
-              @endforeach
+              @endforeach --}}
+              <div v-for="match in matches">
+                <div class="col-md-offset-1 col-md-4 col-xs-offset-2 col-xs-3 text-center text-capitalize">
+                    @{{ match.player1 }}:   @{{ match.points_black }}
+                </div>
+                <div class=" col-md-2 col-xs-2 text-uppercase">
+                  vs
+                </div>
+                <div class=" col-md-4 col-xs-3  text-center text-capitalize">
+                  @{{ match.player2 }}:   @{{ match.points_green }}
+                </div>
+              </div>
             </div>
           </div>
         </div>

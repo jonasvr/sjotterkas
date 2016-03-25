@@ -36,7 +36,8 @@
     <meta name="theme-color" content="#ffffff">
 
     {{-- scripts --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.12.16/vue.min.js" charset="utf-8"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.12.16/vue.min.js" charset="utf-8"></script> --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.19/vue.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js" charset="utf-8"></script>
     <script src="/js/io.js"></script>
 </head>

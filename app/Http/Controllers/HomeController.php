@@ -20,13 +20,7 @@ class HomeController extends Controller
     }
 
     public function index() {
-      $data=[
-        'rankings'=> $this->game->ranking(),
-        'matches' => $this->game->matches(),
-        'game'    => $this->game->getLatest(),
-      ];
-
-      if ($this->game->getLatest() && $this->game->getLatest()->player2) {
+    if ($this->game->getLatest() && $this->game->getLatest()->player2) {
         $player1 = $this->game->getLatest()->getPlayer1->name;
         $player2 = $this->game->getLatest()->getPlayer2->name;
       }else {
@@ -34,12 +28,14 @@ class HomeController extends Controller
       $player2 = 'player2';
       }
 
+      // dd($this->game->matches()->toArray());
       JavaScript::put([
         'rankings'=> $this->game->ranking()->toArray(),
+        'matches' => $this->game->matches()->toArray(),
         'game'    => $this->game->getLatest(),
         'player1' => $player1,
         'player2' => $player2,
       ]);
-      return view('home',$data);
+      return view('home');
     }
 }
