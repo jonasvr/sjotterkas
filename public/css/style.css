@@ -103,23 +103,18 @@ body {
   height: 350px;
 }
 
+.height-300 {
+  height: 300px;
+}
+
 .height-235 {
   height: 235px;
 }
 
 /*scoreboard===================================================================*/
 
-
-.scoreboard
-{
-  /*width: 980px;
-  position: relative;
-  margin: auto;
-  background-color: black;
-  text-align: center;
-  color: #b30000;
-  font-family: "NBP Sydnie2 Scoreboard";
-  font-size: 100px;*/
+.logo {
+  height: inherit;
 }
 
 .names{

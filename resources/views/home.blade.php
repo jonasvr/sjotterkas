@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="wrapper border-R-25 scoreboard">
-    <div class="row">
+  <div class="wrapper scoreboard">
+    <div v-if="show" class="row">
       <div class="col-md-8 padding-top-10 ">
         <div class="bgBlack padding-10 height-400">
-          <h2 class='text-center red'>Current Game</h2>
+        <h2 class='text-center red'>Current Game</h2>
           <div class="row">
             <div class="text-center font-BNP red  ">
                 <p class=" text-size-50">
@@ -90,17 +90,25 @@
         </div>
       </div>
     </div>
+
+
+    <div v-if="!show" class="row">
+      <div class="col-md-offset-3 col-md-6">
+        <div class="bgBlack height-400 text-center red">
+        <p class="padding-top-10">
+          Just started up.
+        </p>
+        <p>
+          Start new game!
+        </p>
+          <img class="height-300 padding-top-10" src="/img/logo.png" alt="" />
+        </div>
+      </div>
+    </div>
+
+
+
+
   </div>
-
-
-  <script>
-    var black   = "<?php echo(isset($game) ?  $game->points_black : "0"); ?>";
-    var green   = "<?php echo(isset($game) ?  $game->points_green : "0"); ?>";
-    var player1 = "<?php echo((isset($game) &&  $game->getPlayer1) ?  $game->getPlayer1->name : "player 1"); ?>";
-    var player2 = "<?php echo((isset($game) &&  $game->getPlayer2) ?  $game->getPlayer2->name : "player 2"); ?>";
-    var winner  = "<?php echo(isset($game)  &&  $game->winner ?  $game->getWinner->name : ""); ?>";
-    // var speeds   = "<?php echo(isset($rankings) ?  $rankings : ['name'=>'','winnings'=>'']); ?>";
-
-  </script>
   <script src="/js/scoreboard.js"></script>
 @endsection

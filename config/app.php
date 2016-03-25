@@ -158,6 +158,7 @@ return [
 
         //added by Jonas Van Reeth
         Collective\Html\HtmlServiceProvider::class,
+        Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
 
     ],
 
