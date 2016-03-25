@@ -46,6 +46,11 @@ class Games extends Model
     return $matches;
   }
 
+  public function users()
+  {
+      return $this->belongsToMany('App\User','game_users', 'game_id', 'card_id');
+  }
+
   public function getPlayer1()
   {
     return $this->belongsTo('App\User','player1','card_id');

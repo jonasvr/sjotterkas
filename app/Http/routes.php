@@ -1,5 +1,11 @@
 <?php
 
+Route::get('/test', function(){
+  $game = \App\Games::orderby('id','desc')->first();
+  var_dump($game);
+  var_dump($game->users());
+});
+
  Route::get('/', ['as' => 'home',  'uses' => 'HomeController@index']);
 Route::get('/rankings', ['as' => 'rankings', 'uses' => 'RankingController@index']);
 // Route::get('/home', function(){

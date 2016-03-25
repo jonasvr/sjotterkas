@@ -10,6 +10,7 @@ use App\Http\Requests;
 use App\Games;
 use App\Goals;
 use App\User;
+// use App\Game_User;
 
 use App\Events\UpdateScore;
 use App\Events\UpdatePlayers;
@@ -87,10 +88,11 @@ class GameController extends Controller
                     ->first();
       if ( !$game->player1 ) {
         $game->player1 = $request->player;
+        $game->users()->attach($request->player,['is_left' => 1]);
       echo "player one is added";}
       elseif( !$game->player2 ) {
         $game->player2 = $request->player;
-
+        $game->users()->attach($request->player,['is_left' => 0]);
         echo "play";
       }
       // upgrade to 4players
@@ -102,9 +104,8 @@ class GameController extends Controller
         echo "game is full";
       }
       $game->save();
-      $user = User::all();
-      $player1 = $user->where('card_id',$game->player1)->first();
-      $player2 = $user->where('card_id',$game->player2)->first();
+      $player1 = User::where('card_id',$game->player1)->first();
+      $player2 = User::where('card_id',$game->player2)->first();
       if( !$player2 ) {
         $player2 = collect([]);
         $player2->name = "player 2";
@@ -131,6 +132,8 @@ class GameController extends Controller
       $game = $this->game
                     ->orderby('id','desc')
                     ->first();
+
+
       if(!$game->winner)
       {
         if($data['team'] == 'black' && $data['action'] == 'goal') {
