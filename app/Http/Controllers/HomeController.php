@@ -33,24 +33,30 @@ class HomeController extends Controller
     public function index()
     {
         $winner = '';
+        $player1 = 'player1';
+        $player2 = 'player2';
+
       if ($this->game->getLatest()) {
         $latest = $this->game->getLatest()->users()->get();
 
         if (count($latest)>1) {
             $player1 = $latest[0]->name;
             $player2 = $latest[1]->name;
-            // dd($winner = $this->game->getLatest()->getWinner()->first());
-            if($this->game->getLatest()->getWinner()->first())
-            {$winner = $this->game->getLatest()->getWinner()->first()->name;}
-          }else {
-            $player1 = 'player1';
-            $player2 = 'player2';
+            if($this->game->getLatest()->getWinners())
+            {
+                $winner = $this->game->getLatest()->getWinners()->name;
             }
-      }else {
-        $player1 = 'player1';
-        $player2 = 'player2';
-        }
-
+          }
+      }
+    //   dd($this->game->getLatest() ->with('users')->get());
+    //   $test = Games::with('users')->get();
+    //   foreach ($test as $user) {
+    //       echo ( $user->users[0]->pivot->is_left);
+    //   }
+    //   dd(Games::with('users')->get());
+    //   dd(User::with('games')->get());
+//     //   var_dump(User::orderBy('id', 'desc')->first()->games());
+// dd();
         JavaScript::put([
           'rankings'=> $this->game->ranking()->toArray(),
           'matches' => $this->game->matches()->toArray(),

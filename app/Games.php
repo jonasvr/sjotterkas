@@ -9,13 +9,13 @@ use App\User;
 class Games extends Model
 {
   protected $fillable = [
-      'player1', 'player2', 'player3','player4','winner'
+      'winner'
   ];
 
 
   public function users()
   {
-      return $this->belongsToMany('App\User','game_users', 'game_id', 'card_id');
+      return $this->belongsToMany('App\User','game_users', 'game_id', 'card_id')->withPivot('is_left');;
   }
 
   public function getLatest() {
@@ -24,6 +24,14 @@ class Games extends Model
 
   public static function ranking()
   {
+
+
+      $test = Games::with('users')->get();
+       foreach ($test as $user) {
+           echo ( $user->users[0]->pivot->is_left);
+       }
+     //   dd(Games::with('users')->get());
+      dd($test);
     $topper   =  Games::groupBy('winner')
                       ->whereNotNull('winner')
                       ->join('users', 'users.card_id', '=', 'games.winner')
@@ -39,22 +47,44 @@ class Games extends Model
     $matches   =  Games::take(4)
                         ->whereNotNull('winner')
                         ->get();
-                        // dd($matches);
     for ($i=0; $i < COUNT($matches); $i++) {
-      $playerName = User::where('card_id',$matches[$i]->player1)->first();
-      $matches[$i]->player1 = $playerName->name;
-      $playerName = User::where('card_id',$matches[$i]->player2)->first();
-      $matches[$i]->player2 = $playerName->name;
-      // dd(  $matches[$i]);
-
+      $matches[$i]->player1 = $matches[$i]->getPlayer($matches[$i]->id, 1)->name;
+      $matches[$i]->player2 = $matches[$i]->getPlayer($matches[$i]->id, 0)->name;
     }
-
     return $matches;
   }
 
+
   public function getPlayer($game_id, $left)
   {
-     return $this->getLatest()->users()->where('game_id',$game_id)->where('is_left',$left)->first();
+    //  no use of this->id => had to be used in other situations
+     return $this->users()
+                    ->where('game_id',$game_id)
+                    ->where('is_left',$left)
+                    ->first();
+  }
+
+  public function countPlayers()
+  {
+      return $this->users()
+                     ->count();
+  }
+
+  public function checkPlayer($card_id)
+  {
+      return $this->users()
+                     ->where('game_users.card_id', $card_id)
+                     //already search on card_id, had to specify in wich table
+                     ->count();
+  }
+
+  public function getWinners()
+  {
+    //   $this->id => huidige game zijn id
+      return $this->users()
+            ->where('game_id',$this->id)
+            ->where('is_left', 'winner')
+            ->first();
   }
 
   public function getPlayer1()

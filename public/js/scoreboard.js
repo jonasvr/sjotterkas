@@ -1,7 +1,7 @@
 console.log(matches);
 if (game != null) {
-  var black   = game['points_black'];
-  var green   = game['points_green'];
+  var left   = game['points_left'];
+  var right   = game['points_right'];
   var player1 = player1;
   var player2 = player2;
   var winner  = winner;
@@ -17,8 +17,8 @@ var speeds  = rankings;
     el: '.scoreboard',
 
     data:{
-      points_black:black,
-      points_green:green,
+      points_left:left,
+      points_right:right,
       player1:player1,
       player2:player2,
       winner:winner,
@@ -30,8 +30,8 @@ var speeds  = rankings;
     ready: function(){
       socket.on('points-channel:App\\Events\\UpdateScore', function(data){
         console.log(data);
-        this.points_black = data.points_black;
-        this.points_green = data.points_green;
+        this.points_left = data.points_left;
+        this.points_right = data.points_right;
       }.bind(this));
       socket.on('player-channel:App\\Events\\UpdatePlayers', function(data){
         console.log(data);
@@ -45,8 +45,8 @@ var speeds  = rankings;
       socket.on('new-channel:App\\Events\\NewGame', function(data){
         if(data.new)
         {
-          this.points_black = 0;
-          this.points_green = 0;
+          this.points_left = 0;
+          this.points_right = 0;
           this.player1 = "player 1";
           this.player2 = "player 2";
           this.winner = "";

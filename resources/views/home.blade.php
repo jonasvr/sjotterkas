@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -12,7 +13,7 @@
                     @{{ player1 }} vs  @{{ player2 }}
                 </p>
                   <p class=" text-size-100">
-                    @{{points_black}} : @{{ points_green }}
+                    @{{points_left}} : @{{ points_right }}
                   </p>
                   <p class=" text-size-50">
                     winner: @{{winner}}
@@ -50,13 +51,13 @@
             <div class="row">
               <div v-for="match in matches">
                 <div class="col-md-offset-1 col-md-4 col-xs-offset-2 col-xs-3 text-center text-capitalize">
-                    @{{ match.player1 }}:   @{{ match.points_black }}
+                    @{{ match.player1 }}:   @{{ match.points_left }}
                 </div>
                 <div class=" col-md-2 col-xs-2 text-uppercase">
                   vs
                 </div>
                 <div class=" col-md-4 col-xs-3  text-center text-capitalize">
-                  @{{ match.player2 }}:   @{{ match.points_green }}
+                  @{{ match.player2 }}:   @{{ match.points_right }}
                 </div>
               </div>
             </div>

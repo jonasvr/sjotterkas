@@ -56,4 +56,10 @@ class User extends Authenticatable
 
         return 'nok';
     }
+
+    public function getRankingAttribute()
+    {
+
+        return $this->games();
+    }
 }

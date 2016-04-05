@@ -15,9 +15,14 @@ class Game_User extends Model
       'card_id','game_id','is_left'
   ];
 
-  public function users()
-  {
-    $this->belongsTo('App\User');
-  }
+  // public function users()
+  // {
+  //   $this->belongsTo('App\User');
+  // }
+  //
+  // public function games()
+  // {
+  //   $this->belongsTo('App\Games');
+  // }
 
 }

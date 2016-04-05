@@ -53,9 +53,9 @@ class GameController extends Controller
       $game = $this->game->getLatest();
       if ( $game ) {
         if (!$game->winner) {
-          if ($game->points_black > $game->points_green) {
+          if ($game->points_left > $game->points_right) {
             $game->winner = $game->player1;
-        }elseif ($game->points_black < $game->points_green) {
+          }elseif ($game->points_left < $game->points_right) {
             $game->winner = $game->player2;
           }
           $game->save();
@@ -89,41 +89,26 @@ class GameController extends Controller
      }
 
       $game = $this->game->getLatest();
-
-
-      if ( !$game->player1 ) {
-         $game->player1 = $request->player;
+      if ( $game->countPlayers() < 1 ) { // later wordt dit 2 => 4 spelers
+        //  $game->player1 = $request->player;
         $game->users()->attach($request->player,['is_left' => 1]);
-      echo "player one is added";}
-      elseif( !$game->player2 ) {
-          if ($request->player == $game->player1) {
+        echo "player one is added";}
+      elseif( $game->countPlayers() < 2 ) { // later wordt dit 4 => 4 spelers
+
+          if ($game->checkPlayer($request->player)) {
               echo "this player is already playing";
           }else {
-              $game->player2 = $request->player;
               $game->users()->attach($request->player,['is_left' => 0]);
               echo "play";
           }
       }
       // upgrade to 4players
-      // elseif(!$game->player3)
-      // { $game->player3 = 'player3';}
-      // elseif(!$game->player4)
-      // { $game->player4 = 'player4';}
-      else {
-        echo "game is full";
-      }
-
-
       $game->save();
-    //   dd($game->users()->where('game_id',$game->id)->where('is_left',0)->first());
-
-
-    //   $player1 = $this->user->where('card_id',$game->player1)->first();
       $player1 = $game->getPlayer($game->id, 1);
       $player2 = $game->getPlayer($game->id, 0);
       if( !$player2 ) {
         $player2 = collect([]);
-        $player2->name = "player 2";
+         $player2->name = "player 2";
       }
 
       event(new UpdatePlayers($player1->name,$player2->name));
@@ -141,7 +126,7 @@ class GameController extends Controller
     public function score(Request $request)
     {
       $validator = Validator::make($request->all(), [
-       'team'   =>  'required|size:5',
+       'team'   =>  'required',
        'action' =>  'required',
      ]);
 
@@ -154,63 +139,52 @@ class GameController extends Controller
       $data = $request->all();
       $game = $this->game->getLatest();
 
-    //   $game = $this->game
-    //                 ->orderby('id','desc')
-    //                 ->first();
-
       if(!$game->winner)
       {
-        if($data['team'] == 'black' && $data['action'] == 'goal') {
-          $game->points_black++;
-        //   $goal = new Goals();
-        //   $goal->player_id = $game->player1;
+        if($data['team'] == 'left' && $data['action'] == 'goal') {
+          $game->points_left++;
+          $goal = new Goals();
+          $goal->player_id = $game->getPlayer($game->id, 1);
           // $goal->speed = $data->speed; //update for when sensors arrive
-          echo 'black scored';
-        }elseif($data['team'] == 'green' && $data['action'] == 'goal')
+          echo 'left scored';
+      }elseif($data['team'] == 'right' && $data['action'] == 'goal')
         {
-          $game->points_green++;
-        //   $goal = new Goals();
-        //   $goal->player_id = $game->player1;
+          $game->points_right++;
+          $goal = new Goals();
+          $goal->player_id = $game->getPlayer($game->id, 0);;
           // $goal->speed = $data->speed; //update for when sensors arrive
-          echo 'green scored';
+          echo 'right scored';
         }
-        elseif($data['team'] == 'black' && $data['action'] == 'cancel')
+        elseif($data['team'] == 'left' && $data['action'] == 'cancel')
         {
-          $game->points_black--;
-        //   $goal = new Goals();
-        //   $goal->player_id = $game->player1;
+          $game->points_left--;
           // $goal->speed = $data->speed; //update for when sensors arrive
-          echo 'black cancel';
-        }elseif($data['team'] == 'green' && $data['action'] == 'cancel')
+          echo 'left cancel';
+      }elseif($data['team'] == 'right' && $data['action'] == 'cancel')
         {
-          $game->points_green--;
-        //   $goal = new Goals();
-        //   $goal->player_id = $game->player1;
-          // $goal->speed = $data->speed; //update for when sensors arrive
-          echo 'green cancel';
+          $game->points_right--;
+        //   $goal->speed = $data->speed; //update for when sensors arrive
+          echo 'right cancel';
         }
 
-        if(($game->points_green >= $this->MINGOALS || $game->points_black >= $this->MINGOALS)
-            && abs($game->points_green-$game->points_black) >= $this->DIFF)
+        if(($game->points_right >= $this->MINGOALS || $game->points_left >= $this->MINGOALS)
+            && abs($game->points_right-$game->points_left) >= $this->DIFF)
         {
-          if($game->points_green < $game->points_black)
-          {
-            $game->winner = $game->player1;
-            echo  'black wins';
-          }else {
-            $game->winner = $game->player2;
-            echo  'green wins';
+          if ($game->points_left > $game->points_right) {
+            $game->winner = 1;
+            echo  'left wins';
+        }elseif($game->points_left < $game->points_right){
+            $game->winner = 0;
+            echo  'right wins';
           }
-          echo $game->winner;
-          $winner = $this->user->where('card_id',$game->winner)->first();
-          event(new UpdateWinner($winner->name));
+        event(new UpdateWinner($game->getWinners()->name));
         }
-        $points_green = $game->points_green;
-        $points_black = $game->points_black;
+        $points_right = $game->points_right;
+        $points_left = $game->points_left;
 
         if($goal->save())
         {
-          event(new UpdateScore($points_green,$points_black));
+          event(new UpdateScore($points_right,$points_left));
         }
       }
       $game->save();
