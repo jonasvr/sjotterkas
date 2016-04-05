@@ -45,16 +45,11 @@
     <nav class="navbar navbar-default red bgWhite ">
         <div class="container">
           <div class="row">
-            <div class="col-md-3 hidden-sm hidden-xs left text-left text-lowercase">
-                {{ Html::link(URL::route('game'), 'watch game',['class' => 'red']) }}
-            </div>
-            <div class="col-md-6 title text-center text-uppercase">
+
+            <div class="col-md-offset-2 col-md-6 title text-center text-uppercase">
               Sjotterkas - scoreboard
             </div>
-            <div class="col-md-3  hidden-sm hidden-xs right text-right text-lowercase">
-              {{ Html::link(URL::route('rankings'), 'rankings',['class' => 'red']) }}
 
-            </div>
           </div>
         </div>
     </nav>

@@ -10,7 +10,6 @@ use App\Http\Requests;
 use App\Games;
 use App\Goals;
 use App\User;
-// use App\Game_User;
 
 use App\Events\UpdateScore;
 use App\Events\UpdatePlayers;
@@ -21,48 +20,47 @@ use Validator;
 class GameController extends Controller
 {
   protected $game;
+  protected $user;
+  protected $MINGOALS = 1;
+  protected $DIFF = 0;
 
-  public function __construct(Games $game)
+  public function __construct(Games $game, User $user)
   {
     $this->game = $game;
+    $this->user = $user;
   }
 
-    public function index()
-    {
-      $data = [
-        "game" => $this->game->orderby('id','desc')->first(),
-      ];
-
-      return View('visuals.score', $data);
-    }
-
-
+  /**
+   * create a new games
+   * checks if there's a past game where the winner has to be determend
+   *
+   * @param Request $request
+   * @return null
+   */
     public function create(Request $request)
     {
-      $validator = Validator::make($request->all(), [
-       'new' => 'required',
-     ]);
+        $validator = Validator::make($request->all(), [
+            'new' => 'required',
+        ]);
 
      if ($validator->fails()) {
-
          echo "error bij aanmaken";
          return "error";
      }
 
       // check if there's a winner or not
-      $game = $this->game->orderby('id','desc')->first();
+      // $game = $this->game->orderby('id','desc')->first();
+      $game = $this->game->getLatest();
       if ( $game ) {
         if (!$game->winner) {
-          $game->winner = 'Tie';
           if ($game->points_black > $game->points_green) {
             $game->winner = $game->player1;
-          }else {
+        }elseif ($game->points_black < $game->points_green) {
             $game->winner = $game->player2;
           }
           $game->save();
         }
       }
-
 
       $game = new Games();
       $game->save();
@@ -71,6 +69,13 @@ class GameController extends Controller
       echo "new";
     }
 
+    /**
+     * adds a new player
+     * checks if all players are filled
+     *
+     * @param Request $request
+     * @return null
+     */
     public function update(Request $request)
     {
       $validator = Validator::make($request->all(), [
@@ -83,17 +88,21 @@ class GameController extends Controller
          return "error";
      }
 
-      $game = $this->game
-                    ->orderby('id','desc')
-                    ->first();
+      $game = $this->game->getLatest();
+
+
       if ( !$game->player1 ) {
-        $game->player1 = $request->player;
+         $game->player1 = $request->player;
         $game->users()->attach($request->player,['is_left' => 1]);
       echo "player one is added";}
       elseif( !$game->player2 ) {
-        $game->player2 = $request->player;
-        $game->users()->attach($request->player,['is_left' => 0]);
-        echo "play";
+          if ($request->player == $game->player1) {
+              echo "this player is already playing";
+          }else {
+              $game->player2 = $request->player;
+              $game->users()->attach($request->player,['is_left' => 0]);
+              echo "play";
+          }
       }
       // upgrade to 4players
       // elseif(!$game->player3)
@@ -103,9 +112,15 @@ class GameController extends Controller
       else {
         echo "game is full";
       }
+
+
       $game->save();
-      $player1 = User::where('card_id',$game->player1)->first();
-      $player2 = User::where('card_id',$game->player2)->first();
+    //   dd($game->users()->where('game_id',$game->id)->where('is_left',0)->first());
+
+
+    //   $player1 = $this->user->where('card_id',$game->player1)->first();
+      $player1 = $game->getPlayer($game->id, 1);
+      $player2 = $game->getPlayer($game->id, 0);
       if( !$player2 ) {
         $player2 = collect([]);
         $player2->name = "player 2";
@@ -115,6 +130,14 @@ class GameController extends Controller
 
     }
 
+    /**
+     * adjust the score (adding or subtracting)
+     * determins the winner
+     *
+     *
+     * @param Request $request
+     * @return null
+     */
     public function score(Request $request)
     {
       $validator = Validator::make($request->all(), [
@@ -129,46 +152,46 @@ class GameController extends Controller
      }
 
       $data = $request->all();
-      $game = $this->game
-                    ->orderby('id','desc')
-                    ->first();
+      $game = $this->game->getLatest();
 
+    //   $game = $this->game
+    //                 ->orderby('id','desc')
+    //                 ->first();
 
       if(!$game->winner)
       {
         if($data['team'] == 'black' && $data['action'] == 'goal') {
           $game->points_black++;
-          $goal = new Goals();
-          $goal->player_id = $game->player1;
+        //   $goal = new Goals();
+        //   $goal->player_id = $game->player1;
           // $goal->speed = $data->speed; //update for when sensors arrive
           echo 'black scored';
         }elseif($data['team'] == 'green' && $data['action'] == 'goal')
         {
           $game->points_green++;
-          $goal = new Goals();
-          $goal->player_id = $game->player1;
+        //   $goal = new Goals();
+        //   $goal->player_id = $game->player1;
           // $goal->speed = $data->speed; //update for when sensors arrive
           echo 'green scored';
         }
         elseif($data['team'] == 'black' && $data['action'] == 'cancel')
         {
           $game->points_black--;
-          $goal = new Goals();
-          $goal->player_id = $game->player1;
+        //   $goal = new Goals();
+        //   $goal->player_id = $game->player1;
           // $goal->speed = $data->speed; //update for when sensors arrive
           echo 'black cancel';
         }elseif($data['team'] == 'green' && $data['action'] == 'cancel')
         {
           $game->points_green--;
-          $goal = new Goals();
-          $goal->player_id = $game->player1;
+        //   $goal = new Goals();
+        //   $goal->player_id = $game->player1;
           // $goal->speed = $data->speed; //update for when sensors arrive
           echo 'green cancel';
         }
 
-        $minGoals=11;
-        $diff = 2;
-        if(($game->points_green >= $minGoals || $game->points_black >= $minGoals) && abs($game->points_green-$game->points_black) >= $diff)
+        if(($game->points_green >= $this->MINGOALS || $game->points_black >= $this->MINGOALS)
+            && abs($game->points_green-$game->points_black) >= $this->DIFF)
         {
           if($game->points_green < $game->points_black)
           {
@@ -178,8 +201,9 @@ class GameController extends Controller
             $game->winner = $game->player2;
             echo  'green wins';
           }
-          $winner = $user->where('card_id',$game->winner)->first();
-          event(new UpdateWinner($winner));
+          echo $game->winner;
+          $winner = $this->user->where('card_id',$game->winner)->first();
+          event(new UpdateWinner($winner->name));
         }
         $points_green = $game->points_green;
         $points_black = $game->points_black;

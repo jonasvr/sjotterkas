@@ -12,6 +12,12 @@ class Games extends Model
       'player1', 'player2', 'player3','player4','winner'
   ];
 
+
+  public function users()
+  {
+      return $this->belongsToMany('App\User','game_users', 'game_id', 'card_id');
+  }
+
   public function getLatest() {
     return $this->orderby('id','desc')->first();
   }
@@ -46,9 +52,9 @@ class Games extends Model
     return $matches;
   }
 
-  public function users()
+  public function getPlayer($game_id, $left)
   {
-      return $this->belongsToMany('App\User','game_users', 'game_id', 'card_id');
+     return $this->getLatest()->users()->where('game_id',$game_id)->where('is_left',$left)->first();
   }
 
   public function getPlayer1()

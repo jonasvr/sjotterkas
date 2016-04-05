@@ -3,7 +3,8 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use DB;
+use App\Games;
 class User extends Authenticatable
 {
 
@@ -29,5 +30,30 @@ class User extends Authenticatable
     public function games()
     {
         return $this->belongsToMany('App\Games','game_users', 'card_id', 'game_id');
+    }
+
+    public function getKdRatioAttribute()
+    {
+
+    }
+    public function kdRatio()
+    {
+        $allPlayers = $this->all();
+        foreach ($allPlayers as $players) {
+            var_dump($players->card_id);
+            echo $players->card_id;
+        }
+
+        $games = $this->join('games', function ($join) {
+            // meerdere joins binnen zelfde tabel
+            $join
+            ->on('games.player1', '=', 'users.card_id')
+            ->orOn('games.player2', '=', 'users.card_id');
+        })
+        ->get();
+
+
+
+        return 'nok';
     }
 }

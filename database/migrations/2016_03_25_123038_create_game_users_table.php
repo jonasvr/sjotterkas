@@ -14,9 +14,9 @@ class CreateGameUsersTable extends Migration
     {
         Schema::create('game_users', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('game_id')->unsinged();
             $table->string('card_id');
             $table->boolean('is_left');
-            $table->integer('game_id')->unsinged();
         });
     }
 
