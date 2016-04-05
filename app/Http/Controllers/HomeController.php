@@ -48,6 +48,8 @@ class HomeController extends Controller
             }
           }
       }
+
+    //   dd(User::with('games')->get());
     //   dd($this->game->getLatest() ->with('users')->get());
     //   $test = Games::with('users')->get();
     //   foreach ($test as $user) {
@@ -58,7 +60,7 @@ class HomeController extends Controller
 //     //   var_dump(User::orderBy('id', 'desc')->first()->games());
 // dd();
         JavaScript::put([
-          'rankings'=> $this->game->ranking()->toArray(),
+          'wins'    => $this->user->Wins,
           'matches' => $this->game->matches()->toArray(),
           'game'    => $this->game->getLatest(),
           'winner'  => $winner,

@@ -33,9 +33,9 @@
                 </p>
               @endforeach
             </div> --}}
-            <div class="row" v-for="speed in speeds">
+            <div class="row" v-for="(index, win) in wins">
                 <p>
-                    @{{ speed.name }} : @{{ speed.winnings }}
+                    @{{ index }} : @{{ win }}
                 </p>
             </div>
 

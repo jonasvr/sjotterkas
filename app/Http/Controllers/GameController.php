@@ -89,16 +89,19 @@ class GameController extends Controller
      }
 
       $game = $this->game->getLatest();
+    //   dd($game);
+      $user_id = $this->user->where('card_id',$request->player)->first()->id;
+    //   dd($game->countPlayers());
       if ( $game->countPlayers() < 1 ) { // later wordt dit 2 => 4 spelers
-        //  $game->player1 = $request->player;
-        $game->users()->attach($request->player,['is_left' => 1]);
+
+        $game->users()->attach($user_id,['is_left' => 1]);
         echo "player one is added";}
       elseif( $game->countPlayers() < 2 ) { // later wordt dit 4 => 4 spelers
 
-          if ($game->checkPlayer($request->player)) {
+          if ($game->checkPlayer($user_id)) {
               echo "this player is already playing";
           }else {
-              $game->users()->attach($request->player,['is_left' => 0]);
+              $game->users()->attach($user_id,['is_left' => 0]);
               echo "play";
           }
       }
@@ -111,6 +114,7 @@ class GameController extends Controller
          $player2->name = "player 2";
       }
 
+    //   dd($player1);
       event(new UpdatePlayers($player1->name,$player2->name));
 
     }

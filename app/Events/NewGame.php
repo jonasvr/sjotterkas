@@ -7,12 +7,13 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 use App\Games;
+use App\User;
 
 class NewGame extends Event implements ShouldBroadcast
 {
     use SerializesModels;
     public $new;
-    public $speeds;
+    public $wins;
     public $matches;
 
     /**
@@ -22,8 +23,9 @@ class NewGame extends Event implements ShouldBroadcast
      */
     public function __construct($new)
     {
-        $this->new  = $new;
-        $this->speeds   = Games::ranking()->toArray();
+        $this->new      = $new;
+        $this->wins     = User::getWinsAttribute();
+        var_dump($this->wins);
         $this->matches  = Games::matches()->toArray();
     }
 

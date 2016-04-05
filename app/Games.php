@@ -15,31 +15,11 @@ class Games extends Model
 
   public function users()
   {
-      return $this->belongsToMany('App\User','game_users', 'game_id', 'card_id')->withPivot('is_left');;
+      return $this->belongsToMany('App\User','game_users', 'game_id', 'user_id')->withPivot('is_left');
   }
 
   public function getLatest() {
     return $this->orderby('id','desc')->first();
-  }
-
-  public static function ranking()
-  {
-
-
-      $test = Games::with('users')->get();
-       foreach ($test as $user) {
-           echo ( $user->users[0]->pivot->is_left);
-       }
-     //   dd(Games::with('users')->get());
-      dd($test);
-    $topper   =  Games::groupBy('winner')
-                      ->whereNotNull('winner')
-                      ->join('users', 'users.card_id', '=', 'games.winner')
-                      ->select(DB::raw('COUNT(games.winner) as winnings'),'users.name')
-                      ->orderBy('winnings','desc')
-                      ->take(8)
-                      ->get();
-    return $topper;
   }
 
   public static function matches()
@@ -47,6 +27,7 @@ class Games extends Model
     $matches   =  Games::take(4)
                         ->whereNotNull('winner')
                         ->get();
+                        // dd($matches);
     for ($i=0; $i < COUNT($matches); $i++) {
       $matches[$i]->player1 = $matches[$i]->getPlayer($matches[$i]->id, 1)->name;
       $matches[$i]->player2 = $matches[$i]->getPlayer($matches[$i]->id, 0)->name;
@@ -70,10 +51,10 @@ class Games extends Model
                      ->count();
   }
 
-  public function checkPlayer($card_id)
+  public function checkPlayer($user_id)
   {
       return $this->users()
-                     ->where('game_users.card_id', $card_id)
+                     ->where('users.id', $user_id)
                      //already search on card_id, had to specify in wich table
                      ->count();
   }
@@ -85,20 +66,5 @@ class Games extends Model
             ->where('game_id',$this->id)
             ->where('is_left', 'winner')
             ->first();
-  }
-
-  public function getPlayer1()
-  {
-    return $this->belongsTo('App\User','player1','card_id');
-  }
-
-  public function getPlayer2()
-  {
-    return $this->belongsTo('App\User','player2','card_id');
-  }
-
-  public function getWinner()
-  {
-    return $this->belongsTo('App\User','winner','card_id');
   }
 }
