@@ -21,7 +21,7 @@ class GameController extends Controller
 {
   protected $game;
   protected $user;
-  protected $MINGOALS = 1;
+  protected $MINGOALS = 3;
   protected $DIFF = 0;
 
   public function __construct(Games $game, User $user)
@@ -53,11 +53,11 @@ class GameController extends Controller
       $game = $this->game->getLatest();
       if ( $game ) {
         if (!$game->winner) {
-          if ($game->points_left > $game->points_right) {
-            $game->winner = $game->player1;
-          }elseif ($game->points_left < $game->points_right) {
-            $game->winner = $game->player2;
-          }
+            if ($game->points_left < $game->points_right) {
+              $game->winner = 0;
+            }elseif($game->points_left > $game->points_right){
+              $game->winner = 1;
+            }
           $game->save();
         }
       }
@@ -89,9 +89,7 @@ class GameController extends Controller
      }
 
       $game = $this->game->getLatest();
-    //   dd($game);
       $user_id = $this->user->where('card_id',$request->player)->first()->id;
-    //   dd($game->countPlayers());
       if ( $game->countPlayers() < 1 ) { // later wordt dit 2 => 4 spelers
 
         $game->users()->attach($user_id,['is_left' => 1]);
@@ -114,7 +112,6 @@ class GameController extends Controller
          $player2->name = "player 2";
       }
 
-    //   dd($player1);
       event(new UpdatePlayers($player1->name,$player2->name));
 
     }
@@ -174,13 +171,14 @@ class GameController extends Controller
         if(($game->points_right >= $this->MINGOALS || $game->points_left >= $this->MINGOALS)
             && abs($game->points_right-$game->points_left) >= $this->DIFF)
         {
-          if ($game->points_left > $game->points_right) {
-            $game->winner = 1;
-            echo  'left wins';
-        }elseif($game->points_left < $game->points_right){
+          if ($game->points_left < $game->points_right) {
             $game->winner = 0;
             echo  'right wins';
+        }elseif($game->points_left > $game->points_right){
+            $game->winner = 1;
+            echo  'left wins';
           }
+          $game->save();
         event(new UpdateWinner($game->getWinners()->name));
         }
         $points_right = $game->points_right;

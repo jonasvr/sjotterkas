@@ -13,8 +13,9 @@ class NewGame extends Event implements ShouldBroadcast
 {
     use SerializesModels;
     public $new;
-    public $wins;
-    public $matches;
+    // public $wins;
+    // public $kds;
+    // public $matches;
 
     /**
      * Create a new event instance.
@@ -24,9 +25,9 @@ class NewGame extends Event implements ShouldBroadcast
     public function __construct($new)
     {
         $this->new      = $new;
-        $this->wins     = User::getWinsAttribute();
-        var_dump($this->wins);
-        $this->matches  = Games::matches()->toArray();
+        // $this->wins     = User::getMostWinsAttribute();
+        // $this->kds      = User::getKDAttribute();
+        // $this->matches  = Games::matches()->toArray();
     }
 
     /**

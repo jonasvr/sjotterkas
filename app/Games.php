@@ -24,11 +24,13 @@ class Games extends Model
 
   public static function matches()
   {
-    $matches   =  Games::take(4)
+    $matches   =  Games::orderby('id','DESC')
+                        ->take(4)
                         ->whereNotNull('winner')
                         ->get();
                         // dd($matches);
     for ($i=0; $i < COUNT($matches); $i++) {
+        // var_dump($matches[$i]->getPlayer($matches[$i]->id, 1));
       $matches[$i]->player1 = $matches[$i]->getPlayer($matches[$i]->id, 1)->name;
       $matches[$i]->player2 = $matches[$i]->getPlayer($matches[$i]->id, 0)->name;
     }

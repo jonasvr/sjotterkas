@@ -26,20 +26,11 @@
         <div class="bgBlack padding-10  height-400">
           <h2 class='text-center blue text-capitalize'>Record: most wins</h2>
           <div class="text-center red text-size-20">
-            {{-- <div class="row">
-              @foreach($rankings as $winners )
-                <p>
-                    {{ $winners->name }} : {{ $winners->winnings }}
-                </p>
-              @endforeach
-            </div> --}}
             <div class="row" v-for="(index, win) in wins">
                 <p>
                     @{{ index }} : @{{ win }}
                 </p>
             </div>
-
-
           </div>
         </div>
       </div>
@@ -68,12 +59,11 @@
         <div class="bgBlack padding-10 height-235">
           <h2 class='text-center blue text-capitalize'>Record:Goal Saldo</h2>
           <div class="text-center red text-size-20">
-            <div class="row">
-              <p>Jonas:0</p>
-              <p>Jonas:0</p>
-              <p>Jonas:0</p>
-              <p>Jonas:0</p>
-            </div>
+              <div class="row" v-for="(index, kd) in kds">
+                  <p>
+                      @{{ index }} : @{{ kd }}
+                  </p>
+              </div>
           </div>
         </div>
       </div>

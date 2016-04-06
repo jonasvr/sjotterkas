@@ -48,24 +48,15 @@ class HomeController extends Controller
             }
           }
       }
-
-    //   dd(User::with('games')->get());
-    //   dd($this->game->getLatest() ->with('users')->get());
-    //   $test = Games::with('users')->get();
-    //   foreach ($test as $user) {
-    //       echo ( $user->users[0]->pivot->is_left);
-    //   }
-    //   dd(Games::with('users')->get());
-    //   dd(User::with('games')->get());
-//     //   var_dump(User::orderBy('id', 'desc')->first()->games());
-// dd();
+    //   dd($this->user->MostWins);
         JavaScript::put([
-          'wins'    => $this->user->Wins,
-          'matches' => $this->game->matches()->toArray(),
           'game'    => $this->game->getLatest(),
           'winner'  => $winner,
           'player1' => $player1,
           'player2' => $player2,
+          'wins'    => $this->user->MostWins,
+          'matches' => $this->game->matches()->toArray(),
+          'kds'     => $this->user->KD,
         ]);
         return view('home');
     }

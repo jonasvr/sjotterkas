@@ -32,7 +32,7 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Games','game_users', 'user_id', 'game_id')->withPivot('is_left');
     }
 
-    public static function getWinsAttribute()
+    public static function getMostWinsAttribute()
     {
         $winner = array();
           $users = User::with('games')->get();
@@ -40,7 +40,6 @@ class User extends Authenticatable
            foreach ($users as $user) {
                foreach ($user->games as $games) {
                    if ($games->winner ==  $games->pivot->is_left) {
-
                        $winner[]=$user->name;
                    }
                }
@@ -49,34 +48,33 @@ class User extends Authenticatable
           $winner = array_slice($winner, 0, 8, true);
           return $winner;
     }
-    public function getKdRatioAttribute()
-    {
 
-    }
-    public function kdRatio()
+    public static function getKDAttribute()
     {
-        $allPlayers = $this->all();
-        foreach ($allPlayers as $players) {
-            var_dump($players->card_id);
-            echo $players->card_id;
+        $kd = array();
+        $users = User::with('games')->get();
+        foreach ($users as $user) {
+            $ratio = array(
+                    'scored' => 0,
+                    'counter' => 0,
+                 );
+            foreach ($user->games as $games) {
+                if ($games->pivot->is_left) {
+                    $ratio['scored']    += $games->points_left;
+                    $ratio['counter']  += $games->points_right;
+                }else {
+                    $ratio['scored']    += $games->points_right;
+                    $ratio['counter']  += $games->points_left;
+                }
+            }
+            if (!$ratio['counter']) {$ratio['counter'] = 1;}
+
+            $kd[$user->name] = round($ratio['scored']/$ratio['counter'], 2) ;
+            // $kd[$user->name] = $ratio['scored']/$ratio['counter'] ;
         }
-
-        $games = $this->join('games', function ($join) {
-            // meerdere joins binnen zelfde tabel
-            $join
-            ->on('games.player1', '=', 'users.card_id')
-            ->orOn('games.player2', '=', 'users.card_id');
-        })
-        ->get();
-
-
-
-        return 'nok';
-    }
-
-    public function getRankingAttribute()
-    {
-
-        return $this->games();
+        arsort($kd);
+        // dd($kd);
+        $kd = array_slice($kd, 0, 8, true);
+        return $kd;
     }
 }

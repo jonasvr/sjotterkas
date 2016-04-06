@@ -21,7 +21,7 @@ class CreateGamesTable extends Migration
             // $table->string('player4')->nullable();
             $table->integer('points_left')->default(0);
             $table->integer('points_right')->default(0);
-            $table->string('winner')->nullable();
+            $table->boolean('winner')->nullable();
             $table->timestamps();
         });
     }

@@ -11,6 +11,7 @@ else {
   var show = 0;
 }
 var wins  = wins;
+var kds   = kds;
 // var socket = io('http://10.242.16.39:3000');//raspberry
 // var socket = io('http://192.168.56.101:3000'); //locaal => kan veranderen
   new Vue({
@@ -24,6 +25,7 @@ var wins  = wins;
       winner:winner,
       wins:wins,
       matches:matches,
+      kds:kds,
       show:show,
     },
 
@@ -39,8 +41,12 @@ var wins  = wins;
         this.player2 = data.player2;
       }.bind(this));
       socket.on('winner-channel:App\\Events\\UpdateWinner', function(data){
+          console.log('winner');
         console.log(data);
-        this.winner = data.winner;
+        this.winner  = data.winner;
+        this.wins    = data.wins;
+        this.matches = data.matches;
+        this.kds     = data.kds;
       }.bind(this));
       socket.on('new-channel:App\\Events\\NewGame', function(data){
         if(data.new)
@@ -52,9 +58,6 @@ var wins  = wins;
           this.winner = "";
           this.show = 1;
         }
-        this.wins    = data.wins;
-        console.log(data.wins);
-        this.matches = data.matches;
       }.bind(this));
     }
   })
