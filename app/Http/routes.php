@@ -1,7 +1,7 @@
 <?php
 
 Route::get('/', ['as' => 'home',  'uses' => 'HomeController@index']);
-// Route::get('/rankings', ['as' => 'rankings', 'uses' => 'RankingController@index']);
+Route::get('/rankings', ['as' => 'rankings', 'uses' => 'RankingController@index']);
 Route::get('/test',  ['as' => 'test',  'uses' => 'HomeController@killDeathRatio']);
 
 Route::group(['prefix'=>'player'], function()

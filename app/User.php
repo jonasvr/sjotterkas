@@ -36,7 +36,6 @@ class User extends Authenticatable
     {
         $winner = array();
           $users = User::with('games')->get();
-        //   dd($games);
            foreach ($users as $user) {
                foreach ($user->games as $games) {
                    if ($games->winner ==  $games->pivot->is_left) {
@@ -45,8 +44,45 @@ class User extends Authenticatable
                }
            }
           $winner = array_count_values ( $winner );
-          $winner = array_slice($winner, 0, 8, true);
+        //   $winner = array_slice($winner, 0, 8, true);
           return $winner;
+    }
+
+    public static function getMostLossesAttribute()
+    {
+        $loser = array();
+         $users = User::with('games')->get();
+           foreach ($users as $user) {
+               foreach ($user->games as $games) {
+                   if ($games->winner !=  $games->pivot->is_left) {
+                       $loser[]=$user->name;
+                   }
+               }
+           }
+          $loser = array_count_values ( $loser );
+          $loser = array_slice($loser, 0, 8, true);
+          return $loser;
+    }
+
+    public static function getPercentageAttribute()
+    {
+        $stat   = array();
+        $users  = User::with('games')->get();
+        foreach ($users as $user) {
+            $stat[$user->name] = array('winner' => 0, 'loser' => 0);
+            foreach ($user->games as $games) {
+                if ($games->winner !=  $games->pivot->is_left) {
+                   $stat[$user->name]['loser']++;
+               }elseif ($games->winner ==  $games->pivot->is_left) {
+                   $stat[$user->name]['winner']++;
+               }
+            }
+            $xGames = $stat[$user->name]['loser'] + $stat[$user->name]['winner'];
+            $stat[$user->name]['xGames'] = $xGames;
+            $stat[$user->name]['winPerc'] = round($stat[$user->name]['winner']  / $xGames,4) * 100;
+            $stat[$user->name]['losPerc'] = round($stat[$user->name]['loser']  / $xGames,4) * 100;
+        }
+        return $stat;
     }
 
     public static function getKDAttribute()
@@ -68,13 +104,10 @@ class User extends Authenticatable
                 }
             }
             if (!$ratio['counter']) {$ratio['counter'] = 1;}
-
             $kd[$user->name] = round($ratio['scored']/$ratio['counter'], 2) ;
-            // $kd[$user->name] = $ratio['scored']/$ratio['counter'] ;
         }
         arsort($kd);
-        // dd($kd);
-        $kd = array_slice($kd, 0, 8, true);
+        // $kd = array_slice($kd, 0, 4, true);
         return $kd;
     }
 }

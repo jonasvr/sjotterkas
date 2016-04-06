@@ -18,11 +18,11 @@ class Games extends Model
       return $this->belongsToMany('App\User','game_users', 'game_id', 'user_id')->withPivot('is_left');
   }
 
-  public function getLatest() {
+  public function getLatestAttribute() {
     return $this->orderby('id','desc')->first();
   }
 
-  public static function matches()
+  public static function getMatchesAttribute()
   {
     $matches   =  Games::orderby('id','DESC')
                         ->take(4)
@@ -34,7 +34,7 @@ class Games extends Model
       $matches[$i]->player1 = $matches[$i]->getPlayer($matches[$i]->id, 1)->name;
       $matches[$i]->player2 = $matches[$i]->getPlayer($matches[$i]->id, 0)->name;
     }
-    return $matches;
+    return $matches->toArray();
   }
 
 
@@ -61,12 +61,11 @@ class Games extends Model
                      ->count();
   }
 
-  public function getWinners()
+  public function getWinnersAttribute()
   {
-    //   $this->id => huidige game zijn id
       return $this->users()
-            ->where('game_id',$this->id)
-            ->where('is_left', 'winner')
+            ->where('game_id', $this->id)
+            ->where('is_left', $this->winner)
             ->first();
   }
 }

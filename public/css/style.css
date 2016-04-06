@@ -64,6 +64,11 @@ body {
 .text-size-50{
   font-size: 50px;
 }
+
+.text-size-30{
+  font-size: 30px;
+}
+
 .text-size-20{
   font-size: 20px;
 }
@@ -97,6 +102,10 @@ body {
 /*SIZES========================================================================*/
 .height-400 {
   height: 400px;
+}
+
+.minheight-400 {
+  min-height: 400px;
 }
 
 .height-350 {

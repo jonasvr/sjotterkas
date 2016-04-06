@@ -1,55 +1,72 @@
 @extends('layouts.app')
 
 @section('content')
-        <div class="container">
+        <div class="wrapper">
+            <div class="row">
+            <div class="col-md-6 padding-top-10 ">
+                <div class="bgBlack padding-10 minheight-400">
+                <h2 class='text-center blue text-capitalize'>Record: most wins</h2>
+                    <div class="text-center red  text-size-30">
+                        @foreach($wins as $name => $win)
+                          {{ $name . ": " . $win }} <br>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 padding-top-10 ">
+                <div class="bgBlack padding-10 minheight-400">
+                <h2 class='text-center blue text-capitalize'>Record: most losses</h2>
+                    <div class="text-center red  text-size-30">
+                        @foreach($losses as $name => $loss)
+                          {{ $name . ": " . $loss }} <br>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 padding-top-10 ">
+                <div class="bgBlack padding-10 minheight-400">
+                <h2 class='text-center blue text-capitalize'>Record: wins/total</h2>
+                    <div class="text-center red  text-size-30">
+                        @foreach($percentage as $name => $stats)
+                          {{ $name . ": " . $stats['winPerc']. "%" }} <br>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 padding-top-10 ">
+                <div class="bgBlack padding-10 minheight-400">
+                <h2 class='text-center blue text-capitalize'>Record: Goal Ratio</h2>
+                    <div class="text-center red  text-size-30">
+                        {{-- {{dd($kds)}} --}}
+                        @foreach($kds as $name => $kd)
+                          {{ $name . ": " . $kd }} <br>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 padding-top-10 ">
+                <div class="bgBlack padding-10 minheight-400">
+                <h2 class='text-center blue text-capitalize'>Record: topspeeds</h2>
+                    <div class="text-center red  text-size-30">
+                        @foreach($percentage as $name => $stats)
+                          {{ $name . ": " . $stats['winPerc']. "%" }} <br>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+                {{-- <pre>
+                    {{ var_dump($wins) }}
+                </pre>
+              @foreach($wins as $name => $win)
+                {{ $name . " " . $win }} <br>
+              @endforeach
+            </div>
           <div class="row">
-            <div class="col-md-offset-1 col-md-5 matches text-center blue text-capitalize">
-              matches
-              <div class="row padding-top-20">
-                <div class="col-md-5 text-center text-capitalize">
-                name: score
-                </div>
-                <div class=" col-md-2 text-uppercase">
-                  vs
-                </div>
-                <div class=" col-md-5 text-center text-capitalize">
-                  name: score
-                </div>
-
-                @foreach($matches as $match)
-                  <div class="col-md-5 text-center text-capitalize">
-                      {{ $match->player1 }}:   {{ $match->points_black }}
-                  </div>
-                  <div class=" col-md-2 text-uppercase">
-                    vs
-                  </div>
-                  <div class=" col-md-5 text-center text-capitalize">
-                    {{ $match->player2 }}:   {{ $match->points_green }}
-                  </div>
-                @endforeach
-
-              </div>
-            </div>
-            <div class="col-md-5 ranking text-center blue text-capitalize">
-              ranking
-              <div class="row padding-top-20">
-                <div class="col-md-offset-2 col-md-6 text-center">
-                  Name
-                </div>
-                <div class="col-md-offset-4 text-center">
-                  winnings
-                </div>
-                @foreach($rankings as $winners )
-                  <div class="col-md-offset-2 col-md-6 text-center">
-                  {{ $winners->name }}
-                  </div>
-                  <div class="col-md-offset-4 text-center">
-                    {{ $winners->winnings }}
-                  </div>
-                @endforeach
-
-              </div>
-            </div>
+            @foreach($matches as $match)
+              <pre>
+                  {{ var_dump($match) }}
+              </pre>
+            @endforeach --}}
           </div>
         </div>
 @endsection

@@ -36,33 +36,29 @@ class HomeController extends Controller
         $player1 = 'player1';
         $player2 = 'player2';
 
-      if ($this->game->getLatest()) {
-        $latest = $this->game->getLatest()->users()->get();
+      if ($this->game->Latest) {
+        $latest = $this->game->Latest->users()->get();
 
         if (count($latest)>1) {
             $player1 = $latest[0]->name;
             $player2 = $latest[1]->name;
-            if($this->game->getLatest()->getWinners())
+            if($this->game->Latest->Winners)
             {
-                $winner = $this->game->getLatest()->getWinners()->name;
+                $winner = $this->game->Latest->Winners->name;
             }
           }
       }
     //   dd($this->user->MostWins);
         JavaScript::put([
-          'game'    => $this->game->getLatest(),
+          'game'    => $this->game->Latest,
           'winner'  => $winner,
           'player1' => $player1,
           'player2' => $player2,
-          'wins'    => $this->user->MostWins,
-          'matches' => $this->game->matches()->toArray(),
-          'kds'     => $this->user->KD,
+          'wins'    => array_slice($this->user->MostWins, 0, 8, true),
+          'matches' => $this->game->Matches,
+          'kds'     => array_slice($this->user->KD, 0, 4, true),
         ]);
         return view('home');
     }
 
-    public function killDeathRatio()
-    {
-        $test=$this->user->kdRatio();
-    }
 }

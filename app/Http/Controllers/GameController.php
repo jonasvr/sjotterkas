@@ -21,13 +21,16 @@ class GameController extends Controller
 {
   protected $game;
   protected $user;
-  protected $MINGOALS = 3;
-  protected $DIFF = 0;
+  // protected $MINGOALS = Game::environment('minGoals');
+  protected $MINGOALS;
+  protected $DIFF;
 
   public function __construct(Games $game, User $user)
   {
     $this->game = $game;
     $this->user = $user;
+    $this->MINGOALS     = config('game.minGoals');
+    $this->DIFF         = config('game.diff');
   }
 
   /**
@@ -48,9 +51,15 @@ class GameController extends Controller
          return "error";
      }
 
+     $lastGame = $this->game->orderby('id','desc')->first();
+     if (!$lastGame->points_left
+            && !$lastGame->points_left
+            && !$lastGame->winner ) {
+         $this->game->where('id',$lastGame->id)->delete();
+     }
       // check if there's a winner or not
       // $game = $this->game->orderby('id','desc')->first();
-      $game = $this->game->getLatest();
+      $game = $this->game->Latest;
       if ( $game ) {
         if (!$game->winner) {
             if ($game->points_left < $game->points_right) {
@@ -88,7 +97,7 @@ class GameController extends Controller
          return "error";
      }
 
-      $game = $this->game->getLatest();
+      $game = $this->game->Latest;
       $user_id = $this->user->where('card_id',$request->player)->first()->id;
       if ( $game->countPlayers() < 1 ) { // later wordt dit 2 => 4 spelers
 
@@ -138,7 +147,7 @@ class GameController extends Controller
      }
 
       $data = $request->all();
-      $game = $this->game->getLatest();
+      $game = $this->game->Latest;
 
       if(!$game->winner)
       {
@@ -179,7 +188,7 @@ class GameController extends Controller
             echo  'left wins';
           }
           $game->save();
-        event(new UpdateWinner($game->getWinners()->name));
+        event(new UpdateWinner($game->Winners->name));
         }
         $points_right = $game->points_right;
         $points_left = $game->points_left;

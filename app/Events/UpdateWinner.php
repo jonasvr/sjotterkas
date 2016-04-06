@@ -26,9 +26,14 @@ class UpdateWinner extends Event implements ShouldBroadcast
     public function __construct($winner)
     {
         $this->winner   = $winner;
-        $this->wins     = User::getMostWinsAttribute();
-        $this->kds      = User::getKDAttribute();
-        $this->matches  = Games::matches()->toArray();
+
+        $wins           = User::getMostWinsAttribute();
+        $this->wins     = array_slice($wins, 0, 8, true);
+
+        $kd             = User::getKDAttribute();
+        $this->kds      = array_slice($kd, 0, 4, true);
+
+        $this->matches  = Games::getMatchesAttribute();
     }
 
     /**
