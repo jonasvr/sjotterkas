@@ -30,8 +30,10 @@ class GameController extends Controller
   {
     $this->game = $game;
     $this->user = $user;
-    $this->MINGOALS     = config('game.minGoals');
-    $this->DIFF         = config('game.diff');
+    // $this->MINGOALS     = config('game.minGoals');
+    $this->MINGOALS     = 3;
+    // $this->DIFF         = config('game.diff');
+    $this->DIFF         = 1;
   }
 
   /**
@@ -154,8 +156,8 @@ class GameController extends Controller
 
       $data = $request->all();
       $game = $this->game->Latest;
-
-      if(!$game->winner)
+    //   $game->winner => boalean => 1 left/ 0 rechts///
+      if($game->winner == null)
       {
         if($data['team'] == 'left' && $data['action'] == 'goal') {
           $game->points_left++;
