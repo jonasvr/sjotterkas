@@ -40,6 +40,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.19/vue.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js" charset="utf-8"></script>
     <script src="/js/io.js"></script>
+
 </head>
 <body id="app-layout" class="bgWhite">
     <nav class="navbar navbar-default red bgWhite ">
@@ -49,15 +50,19 @@
             <div class="col-md-offset-2 col-md-6 title text-center text-uppercase">
               Sjotterkas - scoreboard
             </div>
-
+            <div class="message col-md-4 hide text-center text-uppercase">
+              message test
+            </div>
           </div>
         </div>
     </nav>
-
     @yield('content')
 
     <!-- JavaScripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
 </body>
 </html>

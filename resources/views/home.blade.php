@@ -1,10 +1,12 @@
-
 @extends('layouts.app')
 
 @section('content')
-  <div class="wrapper scoreboard">
+    <div class="wrapper scoreboard">
     <div v-if="show" class="row">
       <div class="col-md-8 padding-top-10 ">
+          <div class="col-md-5 message red">
+              test
+          </div>
         <div class="bgBlack padding-10 height-400">
         <h2 class='text-center red'>Current Game</h2>
           <div class="row">

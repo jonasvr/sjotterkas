@@ -1,4 +1,4 @@
-console.log(wins);
+
 if (game != null) {
   var left   = game['points_left'];
   var right   = game['points_right'];
@@ -30,6 +30,8 @@ var kds   = kds;
     },
 
     ready: function(){
+        $('.message').hide();
+
       socket.on('points-channel:App\\Events\\UpdateScore', function(data){
         console.log(data);
         this.points_left = data.points_left;
@@ -58,6 +60,7 @@ var kds   = kds;
           this.winner = "";
           this.show = 1;
         }
+        $('.message').hide();
       }.bind(this));
     }
   })
