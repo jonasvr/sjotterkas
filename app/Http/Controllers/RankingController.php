@@ -27,7 +27,7 @@ class RankingController extends Controller
           'wins'            => $this->user->MostWins,
           'losses'          => $this->user->MostLosses,
           'percentage'      => $this->user->Percentage,
-          'matches'         => $this->game->matches()->toArray(),
+          'matches'         => $this->game->Matches,
           'kds'             => $this->user->KD,
       ];
 

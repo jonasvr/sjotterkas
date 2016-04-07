@@ -47,11 +47,8 @@
         <div class="container">
           <div class="row">
 
-            <div class="col-md-offset-2 col-md-6 title text-center text-uppercase">
+            <div class="col-md-offset-3 col-md-6 title text-center text-uppercase">
               Sjotterkas - scoreboard
-            </div>
-            <div class="message col-md-4 hide text-center text-uppercase">
-              message test
             </div>
           </div>
         </div>
@@ -61,8 +58,6 @@
     <!-- JavaScripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-
-    </script>
+    @yield('js')
 </body>
 </html>

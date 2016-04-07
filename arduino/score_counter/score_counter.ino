@@ -7,25 +7,25 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
 // constants won't change. They're used here to
 // set pin numbers:
-const int addBlack  = 22;     // the number of the pushbutton pin for add black
-const int subBlack  = 24;     // the number of the pushbutton pin for cancel black
-const int addGreen  = 26;     // the number of the pushbutton pin for add green
-const int subGreen  = 28;     // the number of the pushbutton pin for cancel green
+const int addLeft  = 22;     // the number of the pushbutton pin for add black
+const int subLeft  = 24;     // the number of the pushbutton pin for cancel black
+const int addRight  = 26;     // the number of the pushbutton pin for add green
+const int subRight  = 28;     // the number of the pushbutton pin for cancel green
 const int reset     = 30;     // the number of the pushbutton pin for reset
 const int regi      = 32;     // the number of the pushbutton pin for registering a new player
 // variables will change:
-int addBlackState = 0;         // variable for reading the pushbutton status
-int subBlackState = 0;         // variable for reading the pushbutton status
-int addGreenState = 0;         // variable for reading the pushbutton status
-int subGreenState = 0;         // variable for reading the pushbutton status
+int addLeftState = 0;         // variable for reading the pushbutton status
+int subLeftState = 0;         // variable for reading the pushbutton status
+int addRightState = 0;         // variable for reading the pushbutton status
+int subRightState = 0;         // variable for reading the pushbutton status
 int resetState    = 0;         // variable for reading the pushbutton status to reset game
 int regiState     = 0;         // variable for reading the pushbutton status registering a new player
 
 
-int addBlackAdress = 0; //eeprom adress om op te slaan
-int subBlackAdress = 1; //eeprom adress om op te slaan
-int addGreenAdress = 2; //eeprom adress om op te slaan
-int subGreenAdress = 3; //eeprom adress om op te slaan
+int addLeftAdress = 0; //eeprom adress om op te slaan
+int subLeftAdress = 1; //eeprom adress om op te slaan
+int addRightAdress = 2; //eeprom adress om op te slaan
+int subRightAdress = 3; //eeprom adress om op te slaan
 int resetAdress    = 4; //eeprom adress om op te slaan
 int regiAdress     = 7; //eeprom adress om op te slaan => adress 5 can't save 0 for some reason
 
@@ -38,10 +38,10 @@ void setup() {
   // Print a message to the LCD.
   lcd.print("score board: ");
   // initialize the pushbutton pin as an input:
-  pinMode(addBlack, INPUT_PULLUP);
-  pinMode(subBlack, INPUT_PULLUP);
-  pinMode(addGreen, INPUT_PULLUP);
-  pinMode(subGreen, INPUT_PULLUP);
+  pinMode(addLeft, INPUT_PULLUP);
+  pinMode(subLeft, INPUT_PULLUP);
+  pinMode(addRight, INPUT_PULLUP);
+  pinMode(subRight, INPUT_PULLUP);
   pinMode(reset, INPUT_PULLUP);
   pinMode(regi, INPUT_PULLUP);
   printscore();
@@ -54,46 +54,46 @@ void loop() {
 void checkButtons()
 {
   //statussen van de buttons checken
-  addBlackState = digitalRead(addBlack);  // read the input add
-  subBlackState = digitalRead(subBlack);  // read the input sub
-  addGreenState = digitalRead(addGreen);  // read the input add
-  subGreenState = digitalRead(subGreen);  // read the input sub
+  addLeftState = digitalRead(addLeft);  // read the input add
+  subLeftState = digitalRead(subLeft);  // read the input sub
+  addRightState = digitalRead(addRight);  // read the input add
+  subRightState = digitalRead(subRight);  // read the input sub
   resetState = digitalRead(reset);  // read the input sub
   regiState = digitalRead(regi);  // read the input sub
 
   //checking the black
   //is added or sub pushed  
-  if (addBlackState == LOW) {
-    if (addBlackState != EEPROM.read(addBlackAdress))
+  if (addLeftState == LOW) {
+    if (addLeftState != EEPROM.read(addLeftAdress))
     {
-      EEPROM.write(addBlackAdress, addBlackState);
+      EEPROM.write(addLeftAdress, addLeftState);
       updateScore("goal", 0);
-      Serial.println("goal black");
+      Serial.println("goal left");
     }
-  } else if (subBlackState == LOW) {
-    if (subBlackState != EEPROM.read(subBlackAdress) && score[0] > 0)
+} else if (subLeftState == LOW) {
+    if (subLeftState != EEPROM.read(subLeftAdress) && score[0] > 0)
     {
-      EEPROM.write(subBlackAdress, subBlackState);
+      EEPROM.write(subLeftAdress, subLeftState);
       updateScore("cancel", 0);
-      Serial.println("cancel black");
+      Serial.println("cancel left");
     }
   }
   
   //checking the green
   //is added or sub pushed   
-  else if (addGreenState == LOW) {
-    if (addGreenState != EEPROM.read(addGreenAdress))
+  else if (addRightState == LOW) {
+    if (addRightState != EEPROM.read(addRightAdress))
     {
-      EEPROM.write(addGreenAdress, addGreenState);
+      EEPROM.write(addRightAdress, addRightState);
       updateScore("goal", 1);
-      Serial.println("goal green");
+      Serial.println("goal right");
     }
-  } else if (subGreenState == LOW) {
-    if (subGreenState != EEPROM.read(subGreenAdress) && score[1] > 0)
+} else if (subRightState == LOW) {
+    if (subRightState != EEPROM.read(subRightAdress) && score[1] > 0)
     {
-      EEPROM.write(subGreenAdress, subGreenState);
+      EEPROM.write(subRightAdress, subRightState);
       updateScore("cancel", 1);
-      Serial.println("cancel green");
+      Serial.println("cancel right");
     }
   }
   else if (regiState == LOW) {
@@ -113,10 +113,10 @@ void checkButtons()
   }
   else
   {
-    EEPROM.write(subBlackAdress, subBlackState);
-    EEPROM.write(addBlackAdress, addBlackState);
-    EEPROM.write(subGreenAdress, subGreenState);
-    EEPROM.write(addGreenAdress, addGreenState);
+    EEPROM.write(subLeftAdress, subLeftState);
+    EEPROM.write(addLeftAdress, addLeftState);
+    EEPROM.write(subRightAdress, subRightState);
+    EEPROM.write(addRightAdress, addRightState);
     EEPROM.write(resetAdress, resetState);
     EEPROM.write(regiAdress, regiState);
   }

@@ -33,8 +33,8 @@ class HomeController extends Controller
     public function index()
     {
         $winner = '';
-        $player1 = 'player1';
-        $player2 = 'player2';
+        $player1 = 'player 1';
+        $player2 = 'player 2';
 
       if ($this->game->Latest) {
         $latest = $this->game->Latest->users()->get();

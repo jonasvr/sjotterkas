@@ -3,10 +3,21 @@
 @section('content')
     <div class="wrapper scoreboard">
     <div v-if="show" class="row">
+        <div class="col-md-12">
+            <div class="bgBlack font-BNP height-45 maxHeight-45">
+                <div class="col-md-offset-4 col-md-4">
+                    <div class="message  padding-0">
+                        <p class="text text-size-30 text-center text-capitalize margin-0">
+                            New game started
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
       <div class="col-md-8 padding-top-10 ">
-          <div class="col-md-5 message red">
+          {{-- <div class="col-md-5 message red">
               test
-          </div>
+          </div> --}}
         <div class="bgBlack padding-10 height-400">
         <h2 class='text-center red'>Current Game</h2>
           <div class="row">
@@ -103,5 +114,9 @@
 
 
   </div>
-  <script src="/js/scoreboard.js"></script>
+@endsection
+
+
+@section('js')
+    <script src="/js/scoreboard.js"></script>
 @endsection

@@ -15,6 +15,7 @@ use App\Events\UpdateScore;
 use App\Events\UpdatePlayers;
 use App\Events\UpdateWinner;
 use App\Events\NewGame;
+use App\Events\MessageSystem;
 use Validator;
 
 class GameController extends Controller
@@ -48,15 +49,17 @@ class GameController extends Controller
 
      if ($validator->fails()) {
          echo "error bij aanmaken";
+         event(new MessageSystem('errorMessage', 'Error with creating a new game'));
          return "error";
      }
 
      $lastGame = $this->game->orderby('id','desc')->first();
-     if (!$lastGame->points_left
-            && !$lastGame->points_left
-            && !$lastGame->winner ) {
-         $this->game->where('id',$lastGame->id)->delete();
+     if ($lastGame) {
+         if (!$lastGame->points_left && !$lastGame->points_left && !$lastGame->winner ) {
+             $this->game->where('id',$lastGame->id)->delete();
+         }
      }
+
       // check if there's a winner or not
       // $game = $this->game->orderby('id','desc')->first();
       $game = $this->game->Latest;
@@ -74,7 +77,7 @@ class GameController extends Controller
       $game = new Games();
       $game->save();
       event(new NewGame('true'));
-
+      event(new MessageSystem('succesMessage', 'new game created'));
       echo "new";
     }
 
@@ -92,7 +95,7 @@ class GameController extends Controller
      ]);
 
      if ($validator->fails()) {
-
+         event(new MessageSystem('errorMessage', "error with adding player"));
          echo "error bij speler toevoegen";
          return "error";
      }
@@ -102,13 +105,16 @@ class GameController extends Controller
       if ( $game->countPlayers() < 1 ) { // later wordt dit 2 => 4 spelers
 
         $game->users()->attach($user_id,['is_left' => 1]);
+        event(new MessageSystem('succesMessage', "player one is added"));
         echo "player one is added";}
       elseif( $game->countPlayers() < 2 ) { // later wordt dit 4 => 4 spelers
 
           if ($game->checkPlayer($user_id)) {
+              event(new MessageSystem('errorMessage', "this player is already playing"));
               echo "this player is already playing";
           }else {
               $game->users()->attach($user_id,['is_left' => 0]);
+              event(new MessageSystem('succesMessage', "all players registrated, let's play"));
               echo "play";
           }
       }
@@ -141,7 +147,7 @@ class GameController extends Controller
      ]);
 
      if ($validator->fails()) {
-
+         event(new MessageSystem('errorMessage', "Error with updating score"));
          echo "error bij actie toevoegen";
          return "error";
      }
@@ -156,25 +162,41 @@ class GameController extends Controller
           $goal = new Goals();
           $goal->player_id = $game->getPlayer($game->id, 1);
           // $goal->speed = $data->speed; //update for when sensors arrive
+          $goal->save();
+          event(new MessageSystem('succesMessage', "left scored!"));
           echo 'left scored';
       }elseif($data['team'] == 'right' && $data['action'] == 'goal')
         {
           $game->points_right++;
           $goal = new Goals();
-          $goal->player_id = $game->getPlayer($game->id, 0);;
+          $goal->player_id = $game->getPlayer($game->id, 0);
           // $goal->speed = $data->speed; //update for when sensors arrive
+          $goal->save();
+          event(new MessageSystem('succesMessage', "right scored!"));
           echo 'right scored';
         }
         elseif($data['team'] == 'left' && $data['action'] == 'cancel')
         {
-          $game->points_left--;
-          // $goal->speed = $data->speed; //update for when sensors arrive
-          echo 'left cancel';
+            if ( $game->points_left != 0 ) {
+                $game->points_left--;
+                //   $goal->speed = $data->speed; //update for when sensors arrive
+                  event(new MessageSystem('succesMessage', "left goal canceled"));
+                  echo 'left cancel';
+            }else {
+                event(new MessageSystem('errorMessage', "Can't go under zero"));
+            }
       }elseif($data['team'] == 'right' && $data['action'] == 'cancel')
         {
-          $game->points_right--;
-        //   $goal->speed = $data->speed; //update for when sensors arrive
-          echo 'right cancel';
+            if ( $game->points_right != 0 ) {
+                $game->points_right--;
+                //   $goal->speed = $data->speed; //update for when sensors arrive
+                  event(new MessageSystem('succesMessage', "right goal canceled"));
+                  echo 'right cancel';
+            }else {
+                event(new MessageSystem('errorMessage', "Can't go under zero"));
+            }
+
+
         }
 
         if(($game->points_right >= $this->MINGOALS || $game->points_left >= $this->MINGOALS)
@@ -189,14 +211,11 @@ class GameController extends Controller
           }
           $game->save();
         event(new UpdateWinner($game->Winners->name));
+        event(new MessageSystem('succesMessage', $game->Winners->name . " wins"));
         }
         $points_right = $game->points_right;
         $points_left = $game->points_left;
-
-        if($goal->save())
-        {
-          event(new UpdateScore($points_right,$points_left));
-        }
+        event(new UpdateScore($points_right,$points_left));
       }
       $game->save();
     }

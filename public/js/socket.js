@@ -8,6 +8,7 @@ var playerRedis = new Redis();
 var winnerRedis = new Redis();
 var NewRedis = new Redis();
 var CardRedis = new Redis();
+var MessageRedis = new Redis();
 
 
 
@@ -16,6 +17,7 @@ playerRedis.subscribe('player-channel');
 winnerRedis.subscribe('winner-channel');
 NewRedis.subscribe('new-channel');
 CardRedis.subscribe('card-channel');
+MessageRedis.subscribe('message-channel');
 
 
 //when redis get any kind of message, accept channel + message
@@ -44,6 +46,12 @@ NewRedis.on('message', function(channel,message){
 });
 
 CardRedis.on('message', function(channel,message){
+  console.log(message);
+  message = JSON.parse(message);
+  io.emit(channel + ':' + message.event, message.data); //test-channel:UserSignedUp
+});
+
+MessageRedis.on('message', function(channel,message){
   console.log(message);
   message = JSON.parse(message);
   io.emit(channel + ':' + message.event, message.data); //test-channel:UserSignedUp

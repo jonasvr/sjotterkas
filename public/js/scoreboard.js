@@ -1,4 +1,6 @@
-
+$(document).ready(function () {
+    $('.message').hide();
+});
 if (game != null) {
   var left   = game['points_left'];
   var right   = game['points_right'];
@@ -30,8 +32,6 @@ var kds   = kds;
     },
 
     ready: function(){
-        $('.message').hide();
-
       socket.on('points-channel:App\\Events\\UpdateScore', function(data){
         console.log(data);
         this.points_left = data.points_left;
@@ -60,7 +60,15 @@ var kds   = kds;
           this.winner = "";
           this.show = 1;
         }
-        $('.message').hide();
+      }.bind(this));
+      socket.on('message-channel:App\\Events\\MessageSystem', function(data){
+          console.log(data);
+        $('.text').removeClass("succesMessage");
+        $('.text').removeClass("errorMessage");
+        $('.text').addClass(data.class);
+        $('.text').html(data.message);
+        $('.message').show();
+        $('.message').delay(5000).fadeOut("slow");
       }.bind(this));
     }
   })
