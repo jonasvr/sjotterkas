@@ -44,6 +44,7 @@ class User extends Authenticatable
                }
            }
           $winner = array_count_values ( $winner );
+          arsort($winner);
         //   $winner = array_slice($winner, 0, 8, true);
           return $winner;
     }
@@ -61,6 +62,7 @@ class User extends Authenticatable
            }
           $loser = array_count_values ( $loser );
           $loser = array_slice($loser, 0, 8, true);
+          arsort($loser);
           return $loser;
     }
 

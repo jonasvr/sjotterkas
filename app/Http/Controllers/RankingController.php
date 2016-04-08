@@ -8,6 +8,7 @@ use App\Http\Requests;
 // added by Jonas
 use App\Games;
 use App\User;
+use JavaScript;
 
 class RankingController extends Controller
 {
@@ -30,6 +31,15 @@ class RankingController extends Controller
           'matches'         => $this->game->Matches,
           'kds'             => $this->user->KD,
       ];
+
+      JavaScript::put([
+        'percentage'    => $this->user->Percentage,
+        'losses'        => $this->user->MostLosses,
+        'wins'          => $this->user->MostWins,
+        'matches'       => $this->game->Matches,
+        'kds'           => $this->user->KD,
+
+      ]);
 
     //   dd($data);
 

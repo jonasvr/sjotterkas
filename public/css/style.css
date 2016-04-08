@@ -81,7 +81,13 @@ body {
   font-size: 20px;
 }
 
+.scoreboard .score-size-20{
+    font-size:20;
+}
 
+.rankings .rank-size-30{
+    font-size:30px;
+}
 
 /*PLACEMENT====================================================================*/
 .padding-10
@@ -196,4 +202,11 @@ body {
   padding:0 5%;
     /*font-family: "NBP Sydnie2 Scoreboard";*/
   /*border-radius: 25px;*/
+}
+
+/*FLEX ====================================================================*/
+.flex{
+    display: flex;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
 }
